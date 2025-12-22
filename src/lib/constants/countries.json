@@ -1,0 +1,184 @@
+[
+	{
+		"iso": "AT",
+		"label": "Austria",
+		"code": "43",
+		"icon": "🇦🇹",
+		"postcodeRegex": "^\\d{4}$"
+	},
+	{
+		"iso": "BE",
+		"label": "Belgium",
+		"code": "32",
+		"icon": "🇧🇪",
+		"postcodeRegex": "^\\d{4}$"
+	},
+	{
+		"iso": "BG",
+		"label": "Bulgaria",
+		"code": "359",
+		"icon": "🇧🇬",
+		"postcodeRegex": "^\\d{4}$"
+	},
+	{
+		"iso": "HR",
+		"label": "Croatia",
+		"code": "385",
+		"icon": "🇭🇷",
+		"postcodeRegex": "^\\d{5}$"
+	},
+	{
+		"iso": "CZ",
+		"label": "Czechia",
+		"code": "420",
+		"icon": "🇨🇿",
+		"postcodeRegex": "^\\d{5}\\s\\(\\d{3}\\s\\d{2}\\)$"
+	},
+	{
+		"iso": "DK",
+		"label": "Denmark",
+		"code": "45",
+		"icon": "🇩🇰",
+		"postcodeRegex": "^\\d{4}$"
+	},
+	{
+		"iso": "EE",
+		"label": "Estonia",
+		"code": "372",
+		"icon": "🇪🇪",
+		"postcodeRegex": "^\\d{5}$"
+	},
+	{
+		"iso": "FI",
+		"label": "Finland",
+		"code": "358",
+		"icon": "🇫🇮",
+		"postcodeRegex": "^\\d{5}$"
+	},
+	{
+		"iso": "FR",
+		"label": "France",
+		"code": "33",
+		"icon": "🇫🇷",
+		"postcodeRegex": "^\\d{5}$"
+	},
+	{
+		"iso": "DE",
+		"label": "Germany",
+		"code": "49",
+		"icon": "🇩🇪",
+		"postcodeRegex": "^\\d{2}$"
+	},
+	{
+		"iso": "GR",
+		"label": "Greece",
+		"code": "30",
+		"icon": "🇬🇷",
+		"postcodeRegex": "^\\d{3}\\s{0,1}\\d{2}$"
+	},
+	{
+		"iso": "HU",
+		"label": "Hungary",
+		"code": "36",
+		"icon": "🇭🇺",
+		"postcodeRegex": "^\\d{4}$"
+	},
+	{
+		"iso": "IE",
+		"label": "Ireland",
+		"code": "353",
+		"icon": "🇮🇪",
+		"postcodeRegex": ""
+	},
+	{
+		"iso": "IT",
+		"label": "Italy",
+		"code": "39",
+		"icon": "🇮🇹",
+		"postcodeRegex": "^\\d{5}$"
+	},
+	{
+		"iso": "LV",
+		"label": "Latvia",
+		"code": "371",
+		"icon": "🇱🇻",
+		"postcodeRegex": "^[Ll][Vv][- ]{0,1}\\d{4}$"
+	},
+	{
+		"iso": "LT",
+		"label": "Lithuania",
+		"code": "370",
+		"icon": "🇱🇹",
+		"postcodeRegex": "^[Ll][Tt]\\d{5}$"
+	},
+	{
+		"iso": "LU",
+		"label": "Luxembourg",
+		"code": "352",
+		"icon": "🇱🇺",
+		"postcodeRegex": "^\\d{4}$"
+	},
+	{
+		"iso": "NL",
+		"label": "Netherlands",
+		"code": "31",
+		"icon": "🇳🇱",
+		"postcodeRegex": "^\\d{4}\\s{0,1}[A-Za-z]{2}$"
+	},
+	{
+		"iso": "PL",
+		"label": "Poland",
+		"code": "48",
+		"icon": "🇵🇱",
+		"postcodeRegex": "^\\d{2}[- ]{0,1}\\d{3}$"
+	},
+	{
+		"iso": "PT",
+		"label": "Portugal",
+		"code": "351",
+		"icon": "🇵🇹",
+		"postcodeRegex": "^\\d{4}$"
+	},
+	{
+		"iso": "RO",
+		"label": "Romania",
+		"code": "40",
+		"icon": "🇷🇴",
+		"postcodeRegex": "^\\d{6}$"
+	},
+	{
+		"iso": "SK",
+		"label": "Slovakia",
+		"code": "421",
+		"icon": "🇸🇰",
+		"postcodeRegex": "^\\d{5}\\s\\(\\d{3}\\s\\d{2}\\)$"
+	},
+	{
+		"iso": "SI",
+		"label": "Slovenia",
+		"code": "386",
+		"icon": "🇸🇮",
+		"postcodeRegex": "^([Ss][Ii][- ]{0,1}){0,1}\\d{4}$"
+	},
+	{
+		"iso": "ES",
+		"label": "Spain",
+		"code": "34",
+		"icon": "🇪🇸",
+		"postcodeRegex": "^\\d{5}$"
+	},
+	{
+		"iso": "SE",
+		"label": "Sweden",
+		"code": "46",
+		"icon": "🇸🇪",
+		"postcodeRegex": "^\\d{3}\\s*\\d{2}$"
+	},
+	{
+		"iso": "GB",
+		"label": "United Kingdom",
+		"code": "44",
+		"icon": "🇬🇧",
+		"postcodeRegex": "^[A-Z][A-Z]?[0-9][0-9]?[A-Z]?[\\s]*([\\d][A-Za-z]{2})$"
+	}
+]

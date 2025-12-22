@@ -1,0 +1,9 @@
+{
+	"required": "Šis lauks ir obligāts",
+	"invalidMail": "Nepareizs e-pasts",
+	"invalidMobileNumber": "Nepareizs tālruņa numurs",
+	"internalError": "Iekšēja kļūda",
+	"invalidRegex": "Neatbilst formātam",
+	"max": "Šis lauks nevar būt tik garš",
+	"theseItemsCanNotBeDelivered": "Diemžēl šīs preces nevar piegādāt uz norādīto galamērķi."
+}

@@ -1,0 +1,9 @@
+{
+	"required": "This field is required",
+	"invalidMail": "Wrong email",
+	"invalidMobileNumber": "Wrong mobile number",
+	"internalError": "Internal error",
+	"invalidRegex": "Doesn't fit the format",
+	"max": "This field can't be that long",
+	"theseItemsCanNotBeDelivered": "Unfortunately, these items can not be delivered to the mentioned destination."
+}
