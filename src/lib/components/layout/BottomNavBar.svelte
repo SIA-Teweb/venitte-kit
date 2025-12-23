@@ -12,7 +12,7 @@
 	import CategoriesMenu from '../categories/CategoriesMenu.svelte';
 
 	function openCategoriesDrawer() {
-		if (!page.route.id?.startsWith(route(ROUTES.SHOP, $locale)) && $lastShopLinkStore) {
+		if (!page.url.pathname.startsWith(route(ROUTES.SHOP, $locale)) && $lastShopLinkStore) {
 			goto($lastShopLinkStore);
 
 			return;
@@ -27,6 +27,8 @@
 			}
 		});
 	}
+
+	const isActiveButton = (route: string) => page.url.pathname === route;
 </script>
 
 <nav
@@ -36,7 +38,7 @@
 		icon={House}
 		label={$t('common.home')}
 		onclick={() => goto(route(ROUTES.HOME, $locale))}
-		isActive={page.route.id === route(ROUTES.HOME, $locale)}
+		isActive={isActiveButton(route(ROUTES.HOME, $locale))}
 	/>
 	<MenuButton
 		icon={LayoutDashboard}
@@ -48,13 +50,13 @@
 		icon={Heart}
 		label={$t('common.wishList')}
 		onclick={() => goto(route(ROUTES.WISHLIST, $locale))}
-		isActive={page.route.id === route(ROUTES.WISHLIST, $locale)}
+		isActive={isActiveButton(route(ROUTES.WISHLIST, $locale))}
 	/>
 	<MenuButton
 		icon={Handbag}
 		label={$t('common.cart')}
 		onclick={() => goto(route(ROUTES.CART, $locale))}
-		isActive={page.route.id === route(ROUTES.CART, $locale)}
+		isActive={isActiveButton(route(ROUTES.CART, $locale))}
 	>
 		{#if $cartStore.length > 0}
 			<Badge label={$cartStore.length} preset="icon" />
