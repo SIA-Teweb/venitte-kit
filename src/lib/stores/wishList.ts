@@ -1,7 +1,8 @@
+import { restoreWishList } from '$lib/helpers/wishList';
 import { writable } from 'svelte/store';
 
 export const wishListStore = (() => {
-	const { subscribe, set, update } = writable<Array<number>>([]);
+	const { subscribe, set, update } = writable<Array<number>>(restoreWishList() ?? []);
 
 	function add(id: number) {
 		wishListStore.update((items) => [id, ...items]);

@@ -3,8 +3,6 @@ import { cartStore } from '$lib/stores/cart';
 import { formValues } from '$lib/stores/forms';
 import { get } from 'svelte/store';
 
-export const ssr = false;
-
 export async function load() {
 	const cartItems = get(cartStore);
 	const { country, postcode } = get(formValues);

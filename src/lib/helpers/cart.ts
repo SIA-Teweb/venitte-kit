@@ -31,7 +31,7 @@ export function addToCart(variationId: number) {
 
 export function restoreCart() {
 	const savedCart = storage.get<CartItem[]>(CART_STORAGE_KEY);
-	if (savedCart) cartStore.set(savedCart);
+	return savedCart;
 }
 
 export function increaseAmount(variationId: number) {

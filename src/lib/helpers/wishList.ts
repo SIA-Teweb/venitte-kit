@@ -6,7 +6,7 @@ const WISH_LIST_STORAGE_KEY = 'wishList';
 
 export function restoreWishList() {
 	const savedWishList = storage.get<number[]>(WISH_LIST_STORAGE_KEY);
-	if (savedWishList) wishListStore.set(savedWishList);
+	return savedWishList;
 }
 
 export function addToWishList(id: number) {

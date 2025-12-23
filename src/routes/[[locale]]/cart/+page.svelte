@@ -21,14 +21,6 @@
 	const orderForm = createOrderForm();
 	const { form, createSubmitHandler } = orderForm;
 
-	data.variantsPromise?.then((variants) => {
-		loadedVariants = variants;
-	});
-
-	data.deliveryPromise?.then((data) => {
-		if (data) deliveryData = data;
-	});
-
 	let { totalPrice, totalDiscount } = $derived.by(() => {
 		if (!loadedVariants.length) return { totalPrice: 0, totalDiscount: 0 };
 
@@ -52,6 +44,16 @@
 		});
 
 		return { totalPrice: total, totalDiscount: discount };
+	});
+
+	$effect(() => {
+		data.variantsPromise?.then((variants) => {
+			loadedVariants = variants;
+		});
+
+		data.deliveryPromise?.then((data) => {
+			if (data) deliveryData = data;
+		});
 	});
 </script>
 

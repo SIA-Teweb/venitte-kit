@@ -1,8 +1,9 @@
 import { writable, derived } from 'svelte/store';
 import type { CartItem } from '$lib/types/cart';
+import { restoreCart } from '$lib/helpers/cart';
 
 function createCartStore() {
-	const items = writable<CartItem[]>([]);
+	const items = writable<CartItem[]>(restoreCart() ?? []);
 
 	const count = derived(items, ($items) => $items.length);
 
