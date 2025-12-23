@@ -1,6 +1,7 @@
 <script>
+	import { clickOutside } from '$lib/helpers/events';
 	import Button from './Button.svelte';
-	let { options, onchoose } = $props();
+	let { isOpened = $bindable(false), options, onchoose } = $props();
 
 	const clases = [
 		'p-2',
@@ -19,7 +20,13 @@
 	];
 </script>
 
-<div class={clases}>
+<div
+	class={clases}
+	use:clickOutside
+	onclickoutside={() => {
+		isOpened = false;
+	}}
+>
 	{#each options as option}
 		<Button
 			preset={option.active ? 'primary' : 'ghost'}

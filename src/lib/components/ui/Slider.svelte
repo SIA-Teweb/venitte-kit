@@ -3,7 +3,7 @@
 	import Input from './Input.svelte';
 	import { toMoney } from '$lib/helpers/strings';
 	import { onMount } from 'svelte';
-	let { min, max, minValue, maxValue } = $props();
+	let { min, max, minValue = $bindable(), maxValue = $bindable() } = $props();
 
 	let sliderValue = $state([0, 100]);
 
@@ -28,6 +28,9 @@
 	}
 
 	onMount(() => {
+		if (minValue && maxValue) {
+			sliderValue = [minValue / onePercent, maxValue / onePercent];
+		}
 		onSliderMove(sliderValue);
 	});
 </script>

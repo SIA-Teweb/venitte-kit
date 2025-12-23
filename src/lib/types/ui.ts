@@ -27,6 +27,7 @@ export interface BadgeProps {
 
 export interface InputProps {
 	icon?: typeof ComponentIcon;
+	afterIcon?: typeof ComponentIcon;
 	value?: string;
 	placeholder?: string;
 	full?: boolean;

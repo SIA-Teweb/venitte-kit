@@ -45,10 +45,11 @@
 
 <Input
 	bind:value={searchString}
+	class="rounded-xl"
 	icon={Search}
 	placeholder={$t('shop.searchProducts')}
-	full
 	bind:ref={inputRef}
 	oninput={searchItems}
 	onclick={onSearchFocus}
+	full
 />

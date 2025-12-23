@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { SelectOption } from '$lib/types/ui';
+	import { ChevronsUpDown } from '@lucide/svelte';
 	import Badge from './Badge.svelte';
 	import Input from './Input.svelte';
 	import MultipleSelectOptions from './MultipleSelectOptions.svelte';
@@ -22,21 +23,33 @@
 	}
 
 	function constructLocalOptions() {
-		return options.map((option) => ({
-			...option,
-			active: values.includes(option.value)
-		}));
+		return options
+			.filter((option) => option.label.includes(searchValue))
+			.map((option) => ({
+				...option,
+				active: values.includes(option.value)
+			}));
 	}
 
 	function onFocus() {
 		isFocused = !isFocused;
 	}
+
+	$effect(() => {
+		if (searchValue) {
+			localOptions = constructLocalOptions();
+		}
+	});
 </script>
 
 <div class="relative">
-	<Input bind:value={searchValue} onfocus={onFocus} {placeholder} />
+	<Input bind:value={searchValue} onclick={onFocus} {placeholder} afterIcon={ChevronsUpDown} />
 	{#if isFocused}
-		<MultipleSelectOptions options={localOptions} onchoose={chooseOption} />
+		<MultipleSelectOptions
+			bind:isOpened={isFocused}
+			options={localOptions}
+			onchoose={chooseOption}
+		/>
 	{/if}
 </div>
 {#if values.length > 0}

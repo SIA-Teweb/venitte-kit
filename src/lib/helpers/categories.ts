@@ -1,4 +1,5 @@
-import type { Category } from '$lib/types/categories';
+import { CategoriesFiltersEnum } from '$lib/enums/categories';
+import type { Category, FilterEntry } from '$lib/types/categories';
 
 // Finds category from CategoryTree by URL's paths
 export function findCategoryByPath(
@@ -22,58 +23,54 @@ export function findCategoryByPath(
 	return { current, parent, trail };
 }
 
-enum CategoriesFiltersEnum {
-	page = 'page',
-	sort = 'sort'
+// Parsing string to number[]
+export function parseNumberArrayJson(s: string): number[] {
+	if (!Array.isArray(s)) return [];
+	return s.map(Number).filter(Number.isFinite);
 }
 
-type CategoriesFiltersPayload = {
-	[CategoriesFiltersEnum.page]?: number;
-	[CategoriesFiltersEnum.sort]?: {
-		by: string;
-		order: boolean;
-	};
-};
+// Parsers for different keys
+const filterParsers = {
+	[CategoriesFiltersEnum.page]: (raw: string) => Number(JSON.parse(raw)),
+	[CategoriesFiltersEnum.fromPrice]: (raw: string) => Number(JSON.parse(raw)),
+	[CategoriesFiltersEnum.toPrice]: (raw: string) => Number(JSON.parse(raw)),
+	[CategoriesFiltersEnum.brands]: (raw: string) => parseNumberArrayJson(JSON.parse(raw)),
+	[CategoriesFiltersEnum.sort]: (raw: string) => {
+		const [by, order] = String(JSON.parse(raw)).split(':');
+		return { by, order: order === 'asc' };
+	}
+} satisfies Record<CategoriesFiltersEnum, (raw: string) => unknown>;
 
-type FilterEntry = {
-	[K in CategoriesFiltersEnum]?: unknown;
-};
+type Parsers = typeof filterParsers;
 
+export type CategoriesFiltersPayload = Partial<{
+	[K in keyof Parsers]: ReturnType<Parsers[K]>;
+}>;
+
+function isParserKey(key: string): key is keyof Parsers {
+	return key in filterParsers;
+}
+
+function entry<K extends keyof Parsers>(key: K, raw: string): Pick<CategoriesFiltersPayload, K> {
+	return { [key]: filterParsers[key](raw) } as Pick<CategoriesFiltersPayload, K>;
+}
+
+export function parseCategoriesUrl(url: URL): CategoriesFiltersPayload {
+	let payload: CategoriesFiltersPayload = {};
+
+	url.searchParams.forEach((value, key) => {
+		if (!isParserKey(key)) return;
+		payload = { ...payload, ...entry(key, value) };
+	});
+
+	return payload;
+}
+
+// Generating categories url
 export function generateCategoriesUrl(url: URL, filters: FilterEntry) {
 	for (const [key, value] of Object.entries(filters)) {
 		if (!value) continue;
 
 		url.searchParams.set(key, JSON.stringify(value));
 	}
-}
-
-export function parseKey(url: URL, key: typeof CategoriesFiltersEnum) {
-	console.log(url, key);
-}
-
-export function parseCategoriesUrl(url: URL) {
-	const payload: CategoriesFiltersPayload = {};
-
-	url.searchParams.forEach((value, key) => {
-		const parsedValue = JSON.parse(value);
-
-		if (key === CategoriesFiltersEnum.sort) {
-			const [by, order] = parsedValue.split('.');
-
-			payload[key] = {
-				by,
-				order: order === 'asc'
-			};
-
-			return;
-		}
-
-		if (key === CategoriesFiltersEnum.page) {
-			payload.page = Number(parsedValue);
-
-			return;
-		}
-	});
-
-	return payload;
 }

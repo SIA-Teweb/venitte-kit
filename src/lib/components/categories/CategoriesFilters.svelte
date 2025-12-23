@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { Check, XIcon } from '@lucide/svelte';
+	import { Check, Eraser, XIcon } from '@lucide/svelte';
 	import Slider from '../ui/Slider.svelte';
 	import { t } from '$lib/translations';
 	import Button from '../ui/Button.svelte';
 	import MultipleSelect from '../ui/MultipleSelect.svelte';
 	import type { AvaliableFiltersResponse } from '$lib/types/categories';
 	import FormItem from '../ui/FormItem.svelte';
+	import { generateCategoriesUrl, parseCategoriesUrl } from '$lib/helpers/categories';
+	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 
 	let {
 		avaliableFilters,
@@ -15,16 +18,24 @@
 		closeSidebar: () => void;
 	} = $props();
 
-	let brands = $state([]);
-	let minPrice = $state();
-	let maxPrice = $state();
+	const url = new URL(page.url);
 
-	$effect(() => {
-		avaliableFilters.then((filters) => {
-			console.log(filters);
+	const { brands: extractedBrands, fromPrice, toPrice } = parseCategoriesUrl(url);
+
+	let brands = $state(extractedBrands ?? []);
+	let minPrice = $state(fromPrice);
+	let maxPrice = $state(toPrice);
+
+	function onAcceptFilters() {
+		generateCategoriesUrl(url, {
+			fromPrice: minPrice,
+			toPrice: maxPrice,
+			brands,
+			page: 1
 		});
-		console.log(brands);
-	});
+		goto(url);
+		closeSidebar?.();
+	}
 </script>
 
 {#await avaliableFilters then filters}
@@ -36,10 +47,15 @@
 		/>
 	</FormItem>
 	<FormItem label={$t('shop.price')}>
-		<Slider min={filters.minPrice} max={filters.maxPrice} minValue={minPrice} maxValue={maxPrice} />
+		<Slider
+			min={filters.minPrice}
+			max={filters.maxPrice}
+			bind:minValue={minPrice}
+			bind:maxValue={maxPrice}
+		/>
 	</FormItem>
 	<div class="mt-4 flex flex-col gap-2">
-		<Button icon={Check} label={$t('common.accept')} />
-		<Button preset="tonal" icon={XIcon} label={$t('common.cancel')} onclick={closeSidebar} />
+		<Button icon={Check} label={$t('common.accept')} onclick={onAcceptFilters} />
+		<Button preset="tonal" icon={XIcon} label={$t('common.clearAll')} onclick={closeSidebar} />
 	</div>
 {/await}
