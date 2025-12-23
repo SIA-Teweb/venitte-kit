@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { ROUTES } from '$lib/constants/routes';
+	import { route, ROUTES } from '$lib/constants/routes';
 	import { ImageSizeEnum } from '$lib/enums/images';
+	import { locale } from '$lib/translations';
 	import type { Product } from '$lib/types/products';
 	import Image from '../ui/Image.svelte';
 	import ProductPrice from './ProductPrice.svelte';
@@ -10,12 +11,14 @@
 
 	let { brand, model, image, minPrice, maxPrice, specialPrice, price, link } = $derived(product);
 
-	const thumbLink = image.thumbnails.find((thumb) => thumb.size === ImageSizeEnum.s480)?.link;
+	const thumbLink = $derived(
+		image.thumbnails.find((thumb) => thumb.size === ImageSizeEnum.s480)?.link
+	);
 </script>
 
 <button
 	class="flex flex-col gap-2 p-2 transform transition-transform duration-200 hover:scale-110 text-left"
-	onclick={() => goto(ROUTES.PRODUCT + '/' + link)}
+	onclick={() => goto(route(ROUTES.PRODUCT, $locale) + '/' + link)}
 >
 	<Image src={thumbLink} alt={`${brand} ${model}`} clases="object-contain w-full aspect-square" />
 	<div class="flex flex-col">

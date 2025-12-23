@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { ROUTES } from '$lib/constants/routes';
+	import { route, ROUTES } from '$lib/constants/routes';
 	import { LoaderCircle } from '@lucide/svelte';
 	import Image from '../ui/Image.svelte';
-	import { t } from '$lib/translations';
+	import { t, locale } from '$lib/translations';
 	import ProductPrice from '../products/ProductPrice.svelte';
-	import type { ProductResponse } from '$lib/types/products';
 
-	let { productsPromise }: { productPromise: Promise<ProductResponse> | undefined } = $props();
+	let { productsPromise } = $props();
 </script>
 
 {#if !$productsPromise}
@@ -23,7 +22,7 @@
 	{/if}
 	{#each productResponse?.products as product}
 		<a
-			href={`${ROUTES.PRODUCT}/${product.link}`}
+			href={`${route(ROUTES.PRODUCT, $locale)}/${product.link}`}
 			class="flex hover:preset-tonal p-2 rounded-md gap-4 items-center"
 		>
 			<div class="h-12 w-12">

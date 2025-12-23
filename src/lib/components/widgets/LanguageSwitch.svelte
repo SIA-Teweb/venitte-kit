@@ -1,5 +1,5 @@
 <script>
-	import { locale, t } from '$lib/translations';
+	import { locale, setLocale, t } from '$lib/translations';
 	import Button from '../ui/Button.svelte';
 	const languageOptions = [
 		{
@@ -22,9 +22,7 @@
 		<Button
 			preset={$locale === lang.value ? 'primary' : 'ghost'}
 			label={lang.label}
-			onclick={() => {
-				locale.set(lang.value);
-			}}
+			onclick={() => setLocale(lang.value)}
 			full
 			isMenu
 		/>

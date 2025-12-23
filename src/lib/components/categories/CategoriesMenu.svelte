@@ -4,7 +4,7 @@
 	import Button from '../ui/Button.svelte';
 	import type { Category } from '$lib/types/categories';
 	import { goto } from '$app/navigation';
-	import { ROUTES } from '$lib/constants/routes';
+	import { route, ROUTES } from '$lib/constants/routes';
 	import { ChevronLeft, ChevronRight } from '@lucide/svelte';
 
 	let { trail = [], closeSidebar = undefined } = $props();
@@ -29,7 +29,7 @@
 	function openCategory() {
 		const link = trail.map((category) => category.link).join('/');
 
-		goto(`${ROUTES.SHOP}/${link}`);
+		goto(route(`${ROUTES.SHOP}/${link}`, $locale));
 		closeSidebar?.();
 	}
 </script>

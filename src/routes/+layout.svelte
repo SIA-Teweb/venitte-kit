@@ -18,9 +18,6 @@
 	let { data, children }: { data: LayoutData; children: any } = $props();
 
 	onMount(() => {
-		const savedLocale = storage.get<string>('locale');
-
-		loadTranslations(savedLocale ?? 'lv');
 		restoreCart();
 		restoreWishList();
 	});

@@ -1,5 +1,5 @@
 import { api } from '$lib/helpers/api';
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad } from './[locale]/$types';
 
 export const load: PageServerLoad = async ({ isDataRequest }) => {
 	const newProductsPromise = api.products.new();

@@ -4,7 +4,7 @@
 	import Image from '../ui/Image.svelte';
 	import { decreaseAmount, increaseAmount, removeFromCart } from '$lib/helpers/cart';
 	import type { CartItem, Variant } from '$lib/types/cart';
-	import { ROUTES } from '$lib/constants/routes';
+	import { route, ROUTES } from '$lib/constants/routes';
 	import { goto } from '$app/navigation';
 	import ProductPrice from '../products/ProductPrice.svelte';
 	import { locale } from '$lib/translations';
@@ -22,7 +22,10 @@
 </script>
 
 <div class="flex gap-2 preset-bordered-card p-2">
-	<button class="w-24" onclick={() => goto(`${ROUTES.PRODUCT}/${variant.product.link}`)}>
+	<button
+		class="w-24"
+		onclick={() => goto(route(`${ROUTES.PRODUCT}/${variant.product.link}`, $locale))}
+	>
 		<Image
 			clases={'block aspect-square object-contain'}
 			src={variant.product.images[0].image.dbFile.link}

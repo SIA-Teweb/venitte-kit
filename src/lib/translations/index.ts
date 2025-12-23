@@ -1,4 +1,8 @@
+import { browser } from '$app/environment';
+import { goto } from '$app/navigation';
+import { page } from '$app/state';
 import storage from '$lib/helpers/storage';
+import { get } from 'svelte/store';
 import I18n, { type Config } from 'sveltekit-i18n';
 
 const supportedLocales = ['en', 'lv', 'ru'];
@@ -21,8 +25,29 @@ const config: Config<{ [prop: string]: string }> = {
 	fallbackLocale: 'en'
 };
 
-export const { t, locale, locales, loading, loadTranslations } = new I18n(config);
+export function getLocale(url?: URL, fallback = 'lv'): string {
+	if (browser) {
+		const savedLocale = storage.get<string>('locale');
+		if (savedLocale) return savedLocale;
+	}
 
-locale.subscribe((newLocale) => {
-	storage.set('locale', newLocale);
-});
+	if (url) {
+		const pathLocale = url.pathname.split('/')[1];
+		if (supportedLocales.includes(pathLocale)) return pathLocale;
+	}
+
+	return get(locale) ?? fallback;
+}
+
+export function setLocale(newLocale: string) {
+	if (newLocale && newLocale !== get(locale) && supportedLocales.includes(newLocale)) {
+		locale.set(newLocale);
+		storage.set('locale', newLocale);
+		const parts = page.url.pathname.split('/').filter(Boolean);
+		parts[0] = newLocale;
+		// eslint-disable-next-line svelte/no-navigation-without-resolve
+		return goto('/' + parts.join('/'), { replaceState: true });
+	}
+}
+
+export const { t, locale, locales, loading, loadTranslations } = new I18n(config);

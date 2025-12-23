@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { ROUTES } from '$lib/constants/routes';
+	import { route, ROUTES } from '$lib/constants/routes';
 	import { createDialog } from '$lib/stores/dialogs';
-	import { t } from '$lib/translations';
+	import { locale, t } from '$lib/translations';
 	import CheckOrderForm from '../widgets/CheckOrderForm.svelte';
 	import Contacts from '../widgets/Contacts.svelte';
 	import DeliveryTerms from '../widgets/DeliveryTerms.svelte';
@@ -38,8 +38,8 @@
 
 <footer class="flex flex-col gap-4 bg-surface-100/50 items-center p-6 w-full">
 	<div class="flex gap-x-6 gap-y-2 justify-center flex-wrap">
-		<a href={`${ROUTES.PAGE}/privacy`}>{$t('common.privacy')}</a>
-		<a href={`${ROUTES.PAGE}/rules`}>{$t('common.rules')}</a>
+		<a href={`${route(ROUTES.PAGE, $locale)}/privacy`}>{$t('common.privacy')}</a>
+		<a href={`${route(ROUTES.PAGE, $locale)}/rules`}>{$t('common.rules')}</a>
 		<button on:click={openOrderCheckDialog}>{$t('shop.checkLink')}</button>
 		<button on:click={openContacts}>{$t('common.contacts')}</button>
 		<button on:click={openShippingRules}>{$t('common.shippingRules')}</button>

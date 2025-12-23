@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ROUTES } from '$lib/constants/routes';
+	import { route, ROUTES } from '$lib/constants/routes';
 	import { locale, t } from '$lib/translations';
 	import type { Category } from '$lib/types/categories';
 
@@ -11,12 +11,12 @@
 			.map((c) => c.link)
 			.join('/');
 
-		return `${ROUTES.SHOP}/${path}`;
+		return route(`${ROUTES.SHOP}/${path}`, $locale);
 	}
 </script>
 
 <div class="flex grow">
-	<a href={ROUTES.HOME} class="not-last:after:content-['»'] not-last:after:mx-1">
+	<a href={route(ROUTES.HOME, $locale)} class="not-last:after:content-['»'] not-last:after:mx-1">
 		{$t('common.home')}
 	</a>
 	{#each categories as category, index}

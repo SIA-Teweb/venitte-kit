@@ -3,7 +3,7 @@
 	import { Heart, Languages, House, Search, LayoutDashboard, Handbag } from '@lucide/svelte';
 	import MenuButton from '../ui/MenuButton.svelte';
 	import { goto } from '$app/navigation';
-	import { ROUTES } from '$lib/constants/routes';
+	import { route, ROUTES } from '$lib/constants/routes';
 	import { locale, t } from '$lib/translations';
 	import { sidebarStore } from '$lib/stores/sidebar';
 	import CategoriesMenu from '../categories/CategoriesMenu.svelte';
@@ -17,7 +17,7 @@
 	import Badge from '../ui/Badge.svelte';
 
 	function openCategoriesDrawer() {
-		if (!page.route.id?.startsWith(ROUTES.SHOP) && $lastShopLinkStore) {
+		if (!page.route.id?.startsWith(route(ROUTES.SHOP, $locale)) && $lastShopLinkStore) {
 			goto($lastShopLinkStore);
 
 			return;
@@ -52,14 +52,14 @@
 		<MenuButton
 			icon={House}
 			label={$t('common.home')}
-			onclick={() => goto(ROUTES.HOME)}
-			isActive={page.route.id === ROUTES.HOME}
+			onclick={() => goto(route(ROUTES.HOME, $locale))}
+			isActive={page.route.id === route(ROUTES.HOME, $locale)}
 		/>
 		<MenuButton
 			icon={LayoutDashboard}
 			label={$t('common.list')}
 			onclick={openCategoriesDrawer}
-			isActive={page.url.pathname.startsWith(ROUTES.SHOP)}
+			isActive={page.url.pathname.startsWith(route(ROUTES.SHOP, $locale))}
 		/>
 		<SearchBar />
 		<MenuButton
@@ -76,14 +76,14 @@
 		<MenuButton
 			icon={Heart}
 			label={$t('common.wishList')}
-			onclick={() => goto(ROUTES.WISHLIST)}
-			isActive={page.route.id === ROUTES.WISHLIST}
+			onclick={() => goto(route(ROUTES.WISHLIST, $locale))}
+			isActive={page.route.id === route(ROUTES.WISHLIST, $locale)}
 		/>
 		<MenuButton
 			icon={Handbag}
 			label={$t('common.cart')}
-			onclick={() => goto(ROUTES.CART)}
-			isActive={page.route.id === ROUTES.CART}
+			onclick={() => goto(route(ROUTES.CART, $locale))}
+			isActive={page.route.id === route(ROUTES.CART, $locale)}
 		>
 			{#if $cartStore.length > 0}
 				<Badge label={$cartStore.length} preset="icon" />
