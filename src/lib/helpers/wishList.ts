@@ -1,13 +1,7 @@
 import { wishListStore } from '$lib/stores/wishList';
 import { get } from 'svelte/store';
 import storage from './storage';
-
-const WISH_LIST_STORAGE_KEY = 'wishList';
-
-export function restoreWishList() {
-	const savedWishList = storage.get<number[]>(WISH_LIST_STORAGE_KEY);
-	return savedWishList;
-}
+import { WISH_LIST_STORAGE_KEY } from '$lib/constants/storage';
 
 export function addToWishList(id: number) {
 	wishListStore.add(id);

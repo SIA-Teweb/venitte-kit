@@ -1,12 +1,12 @@
+import { FORMS_STORAGE_KEY } from '$lib/constants/storage';
 import storage from '$lib/helpers/storage';
 import { validator } from '@felte/validator-zod';
 import { createForm } from 'felte';
 import { get, writable } from 'svelte/store';
 import { z } from 'zod';
 
-export const ORDER_FORM_KEY = 'orderForm';
 export const formValues = writable<OrderFormValues>(
-	storage.get<OrderFormValues>(ORDER_FORM_KEY) ?? {
+	storage.get<OrderFormValues>(FORMS_STORAGE_KEY) ?? {
 		country: '',
 		postcode: '',
 		firstName: '',
@@ -67,5 +67,5 @@ export function createDeliveryForm() {
 }
 
 formValues.subscribe((values) => {
-	storage.set(ORDER_FORM_KEY, values);
+	storage.set(FORMS_STORAGE_KEY, values);
 });

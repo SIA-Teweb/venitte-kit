@@ -4,8 +4,7 @@ import { get } from 'svelte/store';
 import storage from './storage';
 import { showErrorToast, showSuccessToast } from './toaster';
 import { t } from '$lib/translations';
-
-const CART_STORAGE_KEY = 'cart';
+import { CART_STORAGE_KEY } from '$lib/constants/storage';
 
 export function addToCart(variationId: number) {
 	const cartProduct: CartItem = {
@@ -27,11 +26,6 @@ export function addToCart(variationId: number) {
 	showSuccessToast({
 		description: get(t)('shop.addedToCart')
 	});
-}
-
-export function restoreCart() {
-	const savedCart = storage.get<CartItem[]>(CART_STORAGE_KEY);
-	return savedCart;
 }
 
 export function increaseAmount(variationId: number) {

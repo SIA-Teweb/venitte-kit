@@ -1,5 +1,11 @@
-import { restoreWishList } from '$lib/helpers/wishList';
+import { WISH_LIST_STORAGE_KEY } from '$lib/constants/storage';
+import storage from '$lib/helpers/storage';
 import { writable } from 'svelte/store';
+
+export function restoreWishList() {
+	const savedWishList = storage.get<number[]>(WISH_LIST_STORAGE_KEY);
+	return savedWishList;
+}
 
 export const wishListStore = (() => {
 	const { subscribe, set, update } = writable<Array<number>>(restoreWishList() ?? []);

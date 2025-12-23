@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
 import { page } from '$app/state';
+import { LOCALE_STORAGE_KEY } from '$lib/constants/storage';
 import storage from '$lib/helpers/storage';
 import { get } from 'svelte/store';
 import I18n, { type Config } from 'sveltekit-i18n';
@@ -27,7 +28,7 @@ const config: Config<{ [prop: string]: string }> = {
 
 export function getLocale(url?: URL, fallback = 'lv'): string {
 	if (browser) {
-		const savedLocale = storage.get<string>('locale');
+		const savedLocale = storage.get<string>(LOCALE_STORAGE_KEY);
 		if (savedLocale) return savedLocale;
 	}
 
@@ -42,7 +43,7 @@ export function getLocale(url?: URL, fallback = 'lv'): string {
 export function setLocale(newLocale: string) {
 	if (newLocale && newLocale !== get(locale) && supportedLocales.includes(newLocale)) {
 		locale.set(newLocale);
-		storage.set('locale', newLocale);
+		storage.set(LOCALE_STORAGE_KEY, newLocale);
 		const parts = page.url.pathname.split('/').filter(Boolean);
 		parts[0] = newLocale;
 		// eslint-disable-next-line svelte/no-navigation-without-resolve

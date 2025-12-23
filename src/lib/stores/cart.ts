@@ -1,6 +1,12 @@
 import { writable, derived } from 'svelte/store';
 import type { CartItem } from '$lib/types/cart';
-import { restoreCart } from '$lib/helpers/cart';
+import storage from '$lib/helpers/storage';
+import { CART_STORAGE_KEY } from '$lib/constants/storage';
+
+function restoreCart() {
+	const savedCart = storage.get<CartItem[]>(CART_STORAGE_KEY);
+	return savedCart;
+}
 
 function createCartStore() {
 	const items = writable<CartItem[]>(restoreCart() ?? []);
