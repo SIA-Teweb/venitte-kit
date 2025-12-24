@@ -22,17 +22,27 @@
 
 	const { brands: extractedBrands, fromPrice, toPrice } = parseCategoriesUrl(url);
 
-	let brands = $state(extractedBrands ?? []);
-	let minPrice = $state(fromPrice);
-	let maxPrice = $state(toPrice);
+	let payload = $state({
+		brands: extractedBrands ?? [],
+		fromPrice: fromPrice,
+		toPrice: toPrice,
+		page: 1
+	});
+
+	function resetFilters(filters: AvaliableFiltersResponse) {
+		console.log(filters);
+		payload = {
+			brands: [],
+			fromPrice: filters.minPrice,
+			toPrice: filters.maxPrice,
+			page: 1
+		};
+		onAcceptFilters();
+		closeSidebar?.();
+	}
 
 	function onAcceptFilters() {
-		generateCategoriesUrl(url, {
-			fromPrice: minPrice,
-			toPrice: maxPrice,
-			brands,
-			page: 1
-		});
+		generateCategoriesUrl(url, payload);
 		goto(url);
 		closeSidebar?.();
 	}
@@ -42,7 +52,7 @@
 	<FormItem label={$t('shop.brand')}>
 		<MultipleSelect
 			options={filters.brands.map((brand) => ({ label: brand.name, value: brand.id }))}
-			bind:values={brands}
+			bind:values={payload.brands}
 			placeholder={$t('shop.choose')}
 		/>
 	</FormItem>
@@ -50,12 +60,17 @@
 		<Slider
 			min={filters.minPrice}
 			max={filters.maxPrice}
-			bind:minValue={minPrice}
-			bind:maxValue={maxPrice}
+			bind:minValue={payload.fromPrice}
+			bind:maxValue={payload.toPrice}
 		/>
 	</FormItem>
 	<div class="mt-4 flex flex-col gap-2">
 		<Button icon={Check} label={$t('common.accept')} onclick={onAcceptFilters} />
-		<Button preset="tonal" icon={XIcon} label={$t('common.clearAll')} onclick={closeSidebar} />
+		<Button
+			preset="tonal"
+			icon={XIcon}
+			label={$t('common.clearAll')}
+			onclick={() => resetFilters(filters)}
+		/>
 	</div>
 {/await}

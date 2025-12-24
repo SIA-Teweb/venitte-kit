@@ -28,7 +28,7 @@
 
 	function openOrderCheckDialog() {
 		createDialog({
-			title: $t('shop.checkOrder'),
+			title: $t('shop.checkLink'),
 			content: {
 				component: CheckOrderForm
 			}

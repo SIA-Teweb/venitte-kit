@@ -9,5 +9,7 @@
 <button class="relative flex flex-col items-center" {onclick}>
 	{@render children?.()}
 	<Icon class="h-full" size={28} fill={isActive ? '' : 'none'} color={isActive ? '' : 'black'} />
-	<span class="text-xs">{label}</span>
+	{#if label}
+		<span class="text-xs">{label}</span>
+	{/if}
 </button>

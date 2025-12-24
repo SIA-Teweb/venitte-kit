@@ -21,7 +21,9 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div class="pt-(--header-height) flex flex-col gap-20 min-h-dvh h-full items-center">
+<div
+	class="pt-(--header-height) pb-(--navbar-height) md:pb-0 flex flex-col gap-20 min-h-dvh h-full items-center"
+>
 	<Toaster />
 	<Dialog />
 	<Header />

@@ -1,6 +1,14 @@
 <script lang="ts">
 	import logo from '$lib/assets/logo.svg';
-	import { Heart, Languages, House, Search, LayoutDashboard, Handbag } from '@lucide/svelte';
+	import {
+		Heart,
+		Languages,
+		House,
+		Search,
+		LayoutDashboard,
+		Handbag,
+		ChevronLeft
+	} from '@lucide/svelte';
 	import MenuButton from '../ui/MenuButton.svelte';
 	import { goto } from '$app/navigation';
 	import { route, ROUTES } from '$lib/constants/routes';
@@ -16,7 +24,12 @@
 	import { cartStore } from '$lib/stores/cart';
 	import Badge from '../ui/Badge.svelte';
 
+	let isSearchBarOpen = $state(false);
+
+	const isActiveButton = (route: string) => page.url.pathname === route;
+
 	function openCategoriesDrawer() {
+		console.log(page.url.pathname, route(ROUTES.SHOP, $locale));
 		if (!page.url.pathname.startsWith(route(ROUTES.SHOP, $locale)) && $lastShopLinkStore) {
 			goto($lastShopLinkStore);
 
@@ -41,8 +54,6 @@
 			}
 		});
 	}
-
-	const isActiveButton = (route: string) => page.url.pathname === route;
 </script>
 
 <header
@@ -98,13 +109,26 @@
 
 	<!-- Mobile Header -->
 	<div class="md:hidden flex w-full max-w-[1200px] gap-6 items-stretch justify-between">
-		<button>
-			<Search />
-		</button>
-		<img class="py-2" src={logo} alt="Venitte Logo" />
-		<button>
-			<Languages onclick={openLanguageSelect} />
-		</button>
+		{#if !isSearchBarOpen}
+			<div class="flex gap-4">
+				<button onclick={() => (isSearchBarOpen = true)}>
+					<ChevronLeft />
+				</button>
+				<button onclick={() => (isSearchBarOpen = true)}>
+					<Search />
+				</button>
+			</div>
+			<img
+				class="absolute left-1/2 top-0 -translate-x-1/2 h-full py-4"
+				src={logo}
+				alt="Venitte Logo"
+			/>
+			<button onclick={openLanguageSelect}>
+				<Languages />
+			</button>
+		{:else}
+			<SearchBar onClosePopover={() => (isSearchBarOpen = false)} />
+		{/if}
 	</div>
 	<!-- End of Mobile Header -->
 </header>

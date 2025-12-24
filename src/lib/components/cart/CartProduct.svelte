@@ -34,45 +34,39 @@
 	</button>
 
 	<div class="flex flex-col gap-2 w-full">
-		<div class="flex items-center justify-between">
-			<div class="text-lg">
+		<div class="flex items-center gap-2 justify-between">
+			<div class="text-md md:text-lg">
 				<span class="font-bold">{variant.product.brand.name}</span>
 				<span>{variant.product.model}</span>
 			</div>
 			<Button preset="tonal" icon={XIcon} iconSized onclick={() => removeFromCart(variant?.id)} />
 		</div>
-		<div class="flex items-center gap-4 h-full">
-			<div class="flex flex-col">
-				{#each variant.options as option}
-					<span>{option.attribute.name.translations[$locale].content}: {option.value.value}</span>
-				{/each}
-			</div>
+		<div class="flex flex-wrap items-center gap-4 h-full">
+			{#if variant.options}
+				<div class="flex flex-col">
+					{#each variant.options as option}
+						<span>{option.attribute.name.translations[$locale].content}: {option.value.value}</span>
+					{/each}
+				</div>
+			{/if}
 			<div class="flex items-center gap-4">
-				<Button
-					preset="ghost"
-					icon={Minus}
-					iconSized
-					onclick={() => decreaseAmount(variant.id)}
-					disabled={1 >= cartItem.amount}
-				/>
-				<span>{cartItem.amount}</span>
-				<Button
-					preset="ghost"
-					icon={Plus}
-					iconSized
-					disabled={variant.amount <= cartItem.amount}
-					onclick={() => increaseAmount(variant.id)}
-				/>
-			</div>
-			<ProductPrice
-				priceObject={{
-					minPrice: 0,
-					maxPrice: 0,
-					price,
-					specialPrice
-				}}
-			/>
-			{#if price !== totalPrice}
+				<div class="flex items-center gap-4">
+					<Button
+						preset="ghost"
+						icon={Minus}
+						iconSized
+						onclick={() => decreaseAmount(variant.id)}
+						disabled={1 >= cartItem.amount}
+					/>
+					<span>{cartItem.amount}</span>
+					<Button
+						preset="ghost"
+						icon={Plus}
+						iconSized
+						disabled={variant.amount <= cartItem.amount}
+						onclick={() => increaseAmount(variant.id)}
+					/>
+				</div>
 				<ProductPrice
 					priceObject={{
 						minPrice: 0,
@@ -81,7 +75,7 @@
 						specialPrice: totalSpecialPrice
 					}}
 				/>
-			{/if}
+			</div>
 		</div>
 	</div>
 </div>

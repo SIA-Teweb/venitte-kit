@@ -8,6 +8,8 @@
 	import SearchBarResults from './SearchBarResults.svelte';
 	import { writable, type Writable } from 'svelte/store';
 
+	let { onClosePopover = undefined } = $props();
+
 	let searchString = $state('');
 	let timer: ReturnType<typeof setTimeout>;
 	const productsPromise: Writable<Promise<ProductResponse> | undefined> = writable(undefined);
@@ -34,6 +36,7 @@
 					}
 				},
 				onClose: () => {
+					onClosePopover?.();
 					isPopoverOpen = false;
 				}
 			});

@@ -59,7 +59,8 @@ export const api = {
 	},
 	orders: {
 		getDeliveryData: (payload: DeliveryPayload) =>
-			post<DeliveryResponse>('/shop/orders/previewdelivery', payload)
+			post<DeliveryResponse>('/shop/orders/previewdelivery', payload),
+		checkOrder: (payload: { code: string; email: string }) => post('/shop/orders/view', payload)
 	},
 	pages: {
 		get: (slug: string) => post<PageResponse>('/pages/pages/first', garbagePagePayload(slug))

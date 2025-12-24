@@ -12,23 +12,17 @@
 	@apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
 }
 
-@layer base {
-	:root {
-		--color-primary-50: 254 248 251;
-		--color-primary-500: 220 42 93;
-		--color-primary-950: 42 0 6;
-	}
-}
-
 @layer theme {
 	:root {
 		--header-height: 60px;
+		--navbar-height: 60px;
 	}
 }
 
 .preset-bordered-card {
 	border: 1px solid var(--color-surface-200);
 	border-radius: var(--radius-xl);
+	overflow: hidden;
 }
 
 /* Icons adjustment */

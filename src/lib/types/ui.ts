@@ -41,7 +41,7 @@ export interface InputProps {
 
 export interface MenuButtonProps {
 	icon: typeof ComponentIcon;
-	label: string;
+	label?: string;
 	isActive?: boolean;
 	onclick: (event: Event) => void;
 	children?: Snippet;

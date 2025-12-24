@@ -36,7 +36,7 @@ const filterParsers = {
 	[CategoriesFiltersEnum.toPrice]: (raw: string) => Number(JSON.parse(raw)),
 	[CategoriesFiltersEnum.brands]: (raw: string) => parseNumberArrayJson(JSON.parse(raw)),
 	[CategoriesFiltersEnum.sort]: (raw: string) => {
-		const [by, order] = String(JSON.parse(raw)).split(':');
+		const [by, order] = String(JSON.parse(raw)).split('.');
 		return { by, order: order === 'asc' };
 	}
 } satisfies Record<CategoriesFiltersEnum, (raw: string) => unknown>;
