@@ -2,7 +2,6 @@
 	import { route, ROUTES } from '$lib/constants/routes';
 	import { createDialog } from '$lib/stores/dialogs';
 	import { locale, t } from '$lib/translations';
-	import CheckOrderForm from '../widgets/CheckOrderForm.svelte';
 	import Contacts from '../widgets/Contacts.svelte';
 	import DeliveryTerms from '../widgets/DeliveryTerms.svelte';
 
@@ -25,22 +24,13 @@
 			}
 		});
 	}
-
-	function openOrderCheckDialog() {
-		createDialog({
-			title: $t('shop.checkLink'),
-			content: {
-				component: CheckOrderForm
-			}
-		});
-	}
 </script>
 
 <footer class="flex flex-col gap-4 bg-surface-100/50 items-center p-6 w-full">
 	<div class="flex gap-x-6 gap-y-2 justify-center flex-wrap">
 		<a href={`${route(ROUTES.PAGE, $locale)}/privacy`}>{$t('common.privacy')}</a>
 		<a href={`${route(ROUTES.PAGE, $locale)}/rules`}>{$t('common.rules')}</a>
-		<button on:click={openOrderCheckDialog}>{$t('shop.checkLink')}</button>
+		<a href={route(ROUTES.ORDER, $locale)}>{$t('shop.checkLink')}</a>
 		<button on:click={openContacts}>{$t('common.contacts')}</button>
 		<button on:click={openShippingRules}>{$t('common.shippingRules')}</button>
 	</div>

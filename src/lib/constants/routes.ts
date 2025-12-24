@@ -4,7 +4,8 @@ export const ROUTES = {
 	CART: '/cart',
 	PRODUCT: '/product',
 	SHOP: '/shop',
-	PAGE: '/pages'
+	PAGE: '/pages',
+	ORDER: '/order'
 } as const;
 
 export function route(path: string, locale: string) {

@@ -2,7 +2,7 @@ import { BASE_API_URI } from '$lib/constants/uri';
 import type { Variant } from '$lib/types/cart';
 import { type Category } from '$lib/types/categories';
 import type { LocationResponse } from '$lib/types/location';
-import { type DeliveryResponse, type DeliveryPayload } from '$lib/types/orders';
+import { type DeliveryResponse, type DeliveryPayload, type OrderResponse } from '$lib/types/orders';
 import { type PageResponse } from '$lib/types/pages';
 import { type ProductSingle, type ProductResponse } from '$lib/types/products';
 
@@ -60,7 +60,8 @@ export const api = {
 	orders: {
 		getDeliveryData: (payload: DeliveryPayload) =>
 			post<DeliveryResponse>('/shop/orders/previewdelivery', payload),
-		checkOrder: (payload: { code: string; email: string }) => post('/shop/orders/view', payload)
+		checkOrder: (payload: { code: string; email: string }) =>
+			post<OrderResponse>('/shop/orders/view', payload)
 	},
 	pages: {
 		get: (slug: string) => post<PageResponse>('/pages/pages/first', garbagePagePayload(slug))

@@ -12,9 +12,11 @@
 	import { route, ROUTES } from '$lib/constants/routes';
 	import { showErrorToast } from '$lib/helpers/toaster';
 
+	let { response = $bindable(undefined) } = $props();
+
 	const schema = z.object({
 		email: z.string().email($t('errors.invalidMail')),
-		code: z.string()
+		code: z.string().nonempty($t('errors.required'))
 	});
 
 	const { form, errors } = createForm<z.infer<typeof schema>>({
@@ -25,12 +27,12 @@
 					code: values.code,
 					email: values.email
 				})
-				.then(() => {
-					goto(route(ROUTES.HOME, $locale));
+				.then((order) => {
+					response = order;
 				})
 				.catch((error) =>
 					showErrorToast({
-						description: error.status === 404 ? $t('shop.noSuchOrder') : $t('errors.internalError')
+						description: $t('shop.noSuchOrder')
 					})
 				);
 		}
