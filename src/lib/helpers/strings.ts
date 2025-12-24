@@ -9,3 +9,10 @@ export function toMoney(number: number, isRounded = false) {
 
 export const formatDateShort = (datetime: string | Date) =>
 	new Date(datetime).toLocaleDateString(get(locale), { month: 'short', day: 'numeric' });
+
+export const formatDateLong = (datetime: string | Date) =>
+	new Date(datetime).toLocaleDateString(get(locale), {
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric'
+	});

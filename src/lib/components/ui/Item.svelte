@@ -1,17 +1,19 @@
 <script lang="ts">
-	let { icon, label, value } = $props();
+	let { icon, label = undefined, value } = $props();
 
 	const Icon = $derived(icon);
 </script>
 
-<div class="flex gap-2 items-center">
+<div class="flex gap-4 items-center">
 	{#if icon}
-		<div class="preset-tonal rounded-full p-2">
-			<Icon size={24} />
+		<div class="rounded-full">
+			<Icon size={!label ? 20 : 24} />
 		</div>
 	{/if}
 	<div class="flex flex-col gap-0.5">
-		<span class="text-xs font-normal leading-none">{label}</span>
-		<span class="text-base font-medium leading-none">{value}</span>
+		{#if label}
+			<span class="text-xs font-normal leading-5">{label}</span>
+		{/if}
+		<span class="text-base font-medium leading-5">{value}</span>
 	</div>
 </div>
