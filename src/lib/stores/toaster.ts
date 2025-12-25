@@ -1,4 +1,4 @@
-import { isMobileScreen } from '$lib/helpers/device';
+import { isMobileScreen } from '$lib/helpers/layout';
 import { createToaster } from '@skeletonlabs/skeleton-svelte';
 
 export const toaster = createToaster({

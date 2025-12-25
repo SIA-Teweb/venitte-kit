@@ -10,7 +10,7 @@
 	import Button from '../ui/Button.svelte';
 	import TextArea from '../ui/TextArea.svelte';
 	import Checkbox from '../ui/Checkbox.svelte';
-	import { isMobileScreen } from '$lib/helpers/device';
+	import { isMobileScreen } from '$lib/helpers/layout';
 	import { formValues } from '$lib/stores/forms';
 
 	let { orderForm } = $props();

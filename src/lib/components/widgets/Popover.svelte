@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { clickOutside } from '$lib/helpers/events';
+	import { scrollLocker } from '$lib/helpers/layout';
 	import { closePopover } from '$lib/helpers/popover';
 	import { onMount } from 'svelte';
 	import { cubicIn } from 'svelte/easing';

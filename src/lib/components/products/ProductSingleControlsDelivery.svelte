@@ -6,7 +6,7 @@
 	import { api } from '$lib/helpers/api';
 	import { formatDateShort } from '$lib/helpers/strings';
 	import type { DeliveryResponse } from '$lib/types/orders';
-	import { isMobileScreen } from '$lib/helpers/device';
+	import { isMobileScreen } from '$lib/helpers/layout';
 	import { openPopover } from '$lib/helpers/popover';
 	import ProductDeliveryChangeForm from './ProductDeliveryChangeForm.svelte';
 	import { createDialog } from '$lib/stores/dialogs';

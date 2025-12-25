@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { isMobileScreen } from '$lib/helpers/device';
+	import { isMobileScreen } from '$lib/helpers/layout';
 	import WhatsAppIcon from '$lib/assets/social/whatsapp.svg';
 	import XIcon from '$lib/assets/social/x.svg';
 	import TelegramIcon from '$lib/assets/social/telegram.svg';

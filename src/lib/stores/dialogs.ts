@@ -1,3 +1,4 @@
+import { scrollLocker } from '$lib/helpers/layout';
 import type { DialogInitProps, DialogProps } from '$lib/types/widgets';
 import { writable, type Writable } from 'svelte/store';
 
@@ -33,5 +34,7 @@ export function closeAllDialogs() {
 }
 
 const dialogs: Writable<DialogProps<unknown>[]> = writable([]);
+
+dialogs.subscribe((current) => scrollLocker(current.length > 0));
 
 export { dialogs };

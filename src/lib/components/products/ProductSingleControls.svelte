@@ -13,7 +13,7 @@
 	import type { SelectOption } from '$lib/types/ui';
 	import { goto } from '$app/navigation';
 	import ShareLinkButtons from '../widgets/ShareLinkButtons.svelte';
-	import { isMobileScreen } from '$lib/helpers/device';
+	import { isMobileScreen } from '$lib/helpers/layout';
 	import { createDialog } from '$lib/stores/dialogs';
 	import { openPopover } from '$lib/helpers/popover';
 	import ProductSingleControlsDelivery from './ProductSingleControlsDelivery.svelte';
