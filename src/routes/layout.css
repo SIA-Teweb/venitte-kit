@@ -22,7 +22,6 @@
 .preset-bordered-card {
 	border: 1px solid var(--color-surface-200);
 	border-radius: var(--radius-xl);
-	overflow: hidden;
 }
 
 /* Icons adjustment */

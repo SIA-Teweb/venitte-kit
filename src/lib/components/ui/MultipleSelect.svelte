@@ -3,7 +3,8 @@
 	import { ChevronsUpDown } from '@lucide/svelte';
 	import Badge from './Badge.svelte';
 	import Input from './Input.svelte';
-	import MultipleSelectOptions from './MultipleSelectOptions.svelte';
+	import { clickOutside } from '$lib/helpers/events';
+	import SelectList from './SelectList.svelte';
 
 	let {
 		options,
@@ -11,7 +12,7 @@
 		values = $bindable()
 	}: { options: SelectOption[]; placeholder: string; values: SelectOption['value'][] } = $props();
 	let searchValue = $state('');
-	let isFocused = $state(false);
+	let isOpened = $state(false);
 	let localOptions = $derived(constructLocalOptions());
 
 	function chooseOption(value: SelectOption['value']) {
@@ -32,7 +33,7 @@
 	}
 
 	function onFocus() {
-		isFocused = !isFocused;
+		isOpened = !isOpened;
 	}
 
 	$effect(() => {
@@ -44,12 +45,14 @@
 
 <div class="relative">
 	<Input bind:value={searchValue} onclick={onFocus} {placeholder} afterIcon={ChevronsUpDown} />
-	{#if isFocused}
-		<MultipleSelectOptions
-			bind:isOpened={isFocused}
-			options={localOptions}
-			onchoose={chooseOption}
-		/>
+	{#if isOpened}
+		<div
+			class="absolute p-2 w-full h-[500%] overflow-scroll top-[110%] no-scrollbar z-50 preset-bordered-card bg-surface-50"
+			use:clickOutside
+			onclickoutside={() => (isOpened = false)}
+		>
+			<SelectList options={localOptions} onchoose={chooseOption} />
+		</div>
 	{/if}
 </div>
 {#if values.length > 0}
