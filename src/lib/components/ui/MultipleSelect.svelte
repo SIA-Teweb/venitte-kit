@@ -55,7 +55,7 @@
 {#if values.length > 0}
 	<div class="flex flex-wrap gap-2 mt-2">
 		{#each localOptions.filter((option) => option.active) as option}
-			<Badge label={option.label} />
+			<Badge>{option.label}</Badge>
 		{/each}
 	</div>
 {/if}

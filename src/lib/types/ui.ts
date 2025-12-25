@@ -22,7 +22,8 @@ type BadgePreset = 'tonal' | 'warning' | 'icon';
 export interface BadgeProps {
 	icon?: typeof ComponentIcon;
 	preset?: BadgePreset;
-	label: string | number;
+	children: Snippet;
+	onclick?: (event: Event) => void;
 }
 
 export interface InputProps {

@@ -9,8 +9,14 @@
 	import Dialog from '$lib/components/ui/Dialog.svelte';
 	import BottomNavBar from '$lib/components/layout/BottomNavBar.svelte';
 	import Toaster from '$lib/components/widgets/Toaster.svelte';
+	import { beforeNavigate } from '$app/navigation';
+	import { previousUrl } from '$lib/stores/navigation';
 
 	let { data, children }: { data: LayoutData; children: any } = $props();
+
+	beforeNavigate(({ from }) => {
+		if (from) previousUrl.set(from.url);
+	});
 
 	$effect(() => {
 		categoriesStore.set(data.categories);

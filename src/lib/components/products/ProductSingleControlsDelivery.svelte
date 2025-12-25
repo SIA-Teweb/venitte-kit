@@ -10,6 +10,7 @@
 	import { openPopover } from '$lib/helpers/popover';
 	import ProductDeliveryChangeForm from './ProductDeliveryChangeForm.svelte';
 	import { createDialog } from '$lib/stores/dialogs';
+	import Badge from '../ui/Badge.svelte';
 
 	let { chosenVariation } = $props();
 	let deliveryData: DeliveryResponse | undefined = $state();
@@ -52,17 +53,17 @@
 	});
 </script>
 
-<button class="badge preset-tonal" onclick={openDeliveryChangeForm}>
+<Badge onclick={openDeliveryChangeForm}>
 	<Van />
-	{#if $formValues}
-		<span>{$t('shop.deliveryTime')} ({$t(`common.countries.${countryLabel}`)}):</span>
+	{#if $formValues && $formValues.country}
+		{$t('shop.deliveryTime')} ({$t(`common.countries.${countryLabel}`)}):
 	{:else}
-		<span>{$t('shop.enterAddress')}</span>
+		{$t('shop.enterAddress')}
 	{/if}
 	{#if !chosenVariation}
-		<span>{$t('common.chooseOption')}</span>
+		{$t('common.chooseOption')}
 	{/if}
 	{#if deliveryData}
-		<span>{formatDateShort(deliveryData.from)} - {formatDateShort(deliveryData.to)}</span>
+		{formatDateShort(deliveryData.from)} - {formatDateShort(deliveryData.to)}
 	{/if}
-</button>
+</Badge>

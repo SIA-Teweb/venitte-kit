@@ -9,7 +9,7 @@
 </script>
 
 <section class="flex flex-col gap-10">
-	<div class="flex justify-between gap-4 items-center">
+	<div class="flex flex-wrap sm:flex-nowrap justify-between gap-4 items-center">
 		<div class="flex flex-col">
 			<h2 class="text-2xl font-bold">{title}</h2>
 			{#if subtitle}

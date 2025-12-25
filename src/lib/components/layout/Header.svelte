@@ -19,7 +19,7 @@
 	import { createDialog } from '$lib/stores/dialogs';
 	import LanguageSwitch from '../widgets/LanguageSwitch.svelte';
 	import { openPopover } from '$lib/helpers/popover';
-	import { lastShopLinkStore } from '$lib/stores/navigation';
+	import { lastShopLinkStore, previousUrl } from '$lib/stores/navigation';
 	import SearchBar from '../widgets/SearchBar.svelte';
 	import { cartStore } from '$lib/stores/cart';
 	import Badge from '../ui/Badge.svelte';
@@ -101,7 +101,7 @@
 			isActive={isActiveButton(route(ROUTES.CART, $locale))}
 		>
 			{#if $cartStore.length > 0}
-				<Badge label={$cartStore.length} preset="icon" />
+				<Badge preset="icon">{$cartStore.length}</Badge>
 			{/if}
 		</MenuButton>
 	</div>
@@ -111,9 +111,11 @@
 	<div class="md:hidden flex w-full max-w-[1200px] gap-6 items-stretch justify-between">
 		{#if !isSearchBarOpen}
 			<div class="flex gap-4">
-				<button onclick={() => (isSearchBarOpen = true)}>
-					<ChevronLeft />
-				</button>
+				{#if $previousUrl && page.url.pathname !== route(ROUTES.HOME, $locale)}
+					<button onclick={() => goto($previousUrl)}>
+						<ChevronLeft />
+					</button>
+				{/if}
 				<button onclick={() => (isSearchBarOpen = true)}>
 					<Search />
 				</button>

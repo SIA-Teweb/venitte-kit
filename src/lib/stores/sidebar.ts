@@ -1,3 +1,4 @@
+import { scrollLocker } from '$lib/helpers/layout';
 import type { SideBarInitProps, SideBarProps } from '$lib/types/ui';
 import { writable } from 'svelte/store';
 
@@ -26,3 +27,5 @@ export const sidebarStore = (() => {
 		close
 	};
 })();
+
+sidebarStore.subscribe((current) => scrollLocker(current.length > 0));

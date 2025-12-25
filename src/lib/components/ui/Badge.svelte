@@ -2,7 +2,7 @@
 	import type { BadgeProps } from '$lib/types/ui';
 	import { scale } from 'svelte/transition';
 
-	let { icon, label, preset = 'tonal' }: BadgeProps = $props();
+	let { icon, children, preset = 'tonal', onclick }: BadgeProps = $props();
 
 	const presets = {
 		tonal: 'badge preset-tonal',
@@ -13,9 +13,9 @@
 	const Icon = $derived(icon);
 </script>
 
-<div class={presets[preset]} in:scale>
+<button class="{presets[preset]} whitespace-normal text-left wrap-break-word" in:scale {onclick}>
 	{#if icon}
 		<Icon />
 	{/if}
-	<span>{label}</span>
-</div>
+	{@render children?.()}
+</button>

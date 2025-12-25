@@ -157,7 +157,7 @@
 			/>
 		</FormItem>
 	{/each}
-	<div class="flex gap-2">
+	<div class="flex gap-2 flex-wrap sm:flex-nowrap">
 		<ProductWishListButton id={product.id} />
 		<Button icon={Share2} preset="tonal" onclick={openSharingBox} />
 		<Button
@@ -170,12 +170,14 @@
 </div>
 <div class="flex flex-wrap gap-2">
 	<ProductSingleControlsDelivery {chosenVariation} />
-	<Badge
-		preset={totalStock < 5 ? 'warning' : 'tonal'}
-		label={`${$t('shop.inStock')} ${totalStock < 5 ? totalStock : '>5'} ${$t('common.pcs')}.`}
-		icon={Package}
-	/>
+	<Badge preset={totalStock < 5 ? 'warning' : 'tonal'} icon={Package}>
+		{$t('shop.inStock')}
+		{totalStock < 5 ? totalStock : '>5'}
+		{$t('common.pcs')}
+	</Badge>
 	{#if chosenVariation && chosenVariation.ean}
-		<Badge preset="tonal" label={`EAN: ${chosenVariation.ean}`} />
+		<Badge preset="tonal">
+			EAN: ${chosenVariation.ean}
+		</Badge>
 	{/if}
 </div>

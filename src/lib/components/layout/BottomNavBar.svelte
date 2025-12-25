@@ -59,7 +59,7 @@
 		isActive={isActiveButton(route(ROUTES.CART, $locale))}
 	>
 		{#if $cartStore.length > 0}
-			<Badge label={$cartStore.length} preset="icon" />
+			<Badge preset="icon">{$cartStore.length}</Badge>
 		{/if}
 	</MenuButton>
 </nav>
