@@ -1,4 +1,6 @@
+import type { OrderItemStatusEnum, OrderStatusEnum } from '$lib/enums/orders';
 import type { CartItem } from './cart';
+import type { Image } from './general';
 
 export interface DeliveryPayload {
 	country: string;
@@ -13,8 +15,18 @@ export interface DeliveryResponse {
 	price: number;
 }
 
-interface OrderResponseItem {
-	id: number;
+interface OrderResponseItemOption {
+	name: { [lang: string]: string };
+	value: string | number;
+}
+
+export interface OrderResponseItem {
+	name: string;
+	amount: 1;
+	price: number;
+	status: OrderItemStatusEnum;
+	image: Image;
+	options: OrderResponseItemOption[];
 }
 
 export interface OrderResponse {
@@ -39,6 +51,6 @@ export interface OrderResponse {
 	promocode: string;
 	promocodePriceReduction: number;
 	rulesAgreed: true;
-	status: string;
+	status: OrderStatusEnum;
 	totalPrice: number;
 }

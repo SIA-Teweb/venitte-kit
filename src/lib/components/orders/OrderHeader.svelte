@@ -4,11 +4,14 @@
 	import OrderHeaderBlock from './OrderHeaderBlock.svelte';
 	import { formatDateLong, toMoney } from '$lib/helpers/strings';
 	import { t } from '$lib/translations';
+	import OrderStatusBadge from './OrderStatusBadge.svelte';
+	import type { OrderResponse } from '$lib/types/orders';
+	import { OrderPaidStatusEnum } from '$lib/enums/orders';
 
-	let { order } = $props();
+	let { order }: { order: OrderResponse } = $props();
 </script>
 
-<div class="grid grid-cols-1 md:grid-cols-4 gap-2">
+<div class="flex overflow-scroll no-scrollbar lg:grid lg:grid-cols-4 gap-2">
 	<OrderHeaderBlock title={$t('shop.contactData')}>
 		<Item icon={User} value={`${order.firstname} ${order.lastname}`} />
 		<Item icon={Mail} value={order.email} />
@@ -19,9 +22,14 @@
 	</OrderHeaderBlock>
 	<OrderHeaderBlock title={$t('shop.dateAndStatus')}>
 		<Item icon={CalendarDays} value={formatDateLong(order.createdAt)} />
+		<OrderStatusBadge label={order.status} type="orderStatus" />
 	</OrderHeaderBlock>
-	<OrderHeaderBlock title={$t('shop.dateAndStatus')}>
+	<OrderHeaderBlock title={$t('shop.payment')}>
 		<Item icon={CreditCard} value={toMoney(order.totalPrice)} />
 		<Item icon={Van} value={toMoney(order.deliveryPrice)} />
+		<OrderStatusBadge
+			label={order.paid ? OrderPaidStatusEnum.Paid : OrderPaidStatusEnum.NotPaid}
+			type="orderPaidStatus"
+		/>
 	</OrderHeaderBlock>
 </div>
