@@ -1,33 +1,35 @@
-import Popover from '$lib/components/widgets/Popover.svelte';
 import type { PopoverInitProps } from '$lib/types/widgets';
 import { mount, unmount } from 'svelte';
+import { scrollLocker } from './layout';
+import Popover from '$lib/components/widgets/Popover.svelte';
 
-let instance: Record<string, Popover> | null = null;
+let popoverInstance: Record<string, Popover> | undefined = undefined;
+let target: HTMLElement | undefined = undefined;
 
 export function openPopover<T>(data: PopoverInitProps<T>) {
-	if (instance) {
-		unmount(instance, { outro: true });
-		instance = null;
+	if (popoverInstance || target) {
+		return;
 	}
 
-	const rect = data.target.getBoundingClientRect();
-	const x = (rect.left + rect.right) / 2 + window.pageXOffset;
-	const y = rect.bottom + window.pageYOffset;
+	target = data.target;
+	target.classList.add('relative', 'z-20');
 
-	instance = mount(Popover, {
-		target: data.target.parentElement as HTMLElement,
-		props: {
-			x,
-			y,
-			width: data.width === 'parent' ? `${rect.right - rect.left}px` : undefined,
-			content: data.content,
-			onClose: data.onClose
-		}
+	popoverInstance = mount(Popover, {
+		target: data.target,
+		props: { ...data, close: closePopover }
 	});
+
+	scrollLocker(true);
 }
 
-export async function closePopover() {
-	if (!instance) return;
-	await unmount(instance, { outro: true });
-	instance = null;
+export function closePopover() {
+	if (popoverInstance) {
+		unmount(popoverInstance, { outro: true });
+		popoverInstance = undefined;
+		setTimeout(() => {
+			target?.classList.remove('relative', 'z-20');
+			target = undefined;
+		}, 200);
+	}
+	scrollLocker(false);
 }

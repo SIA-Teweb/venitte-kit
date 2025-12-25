@@ -13,7 +13,6 @@
 	let searchString = $state('');
 	let timer: ReturnType<typeof setTimeout>;
 	const productsPromise: Writable<Promise<ProductResponse> | undefined> = writable(undefined);
-	let isPopoverOpen: boolean = false;
 	let inputRef: HTMLElement | undefined = $state(undefined);
 
 	function searchItems() {
@@ -25,24 +24,19 @@
 	}
 
 	function onSearchFocus(event: Event) {
-		if (!isPopoverOpen) {
-			openPopover<typeof SearchBarResults>({
-				target: inputRef ?? (event.currentTarget as HTMLElement),
-				width: 'parent',
-				content: {
-					component: SearchBarResults,
-					props: {
-						productsPromise: productsPromise
-					}
-				},
-				onClose: () => {
-					onClosePopover?.();
-					isPopoverOpen = false;
+		openPopover<typeof SearchBarResults>({
+			target: inputRef ?? (event.currentTarget as HTMLElement),
+			width: 'parent',
+			content: {
+				component: SearchBarResults,
+				props: {
+					productsPromise: productsPromise
 				}
-			});
-
-			isPopoverOpen = true;
-		}
+			},
+			onClose: () => {
+				onClosePopover?.();
+			}
+		});
 	}
 </script>
 

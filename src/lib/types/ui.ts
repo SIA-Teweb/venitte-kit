@@ -24,6 +24,7 @@ export interface BadgeProps {
 	preset?: BadgePreset;
 	children: Snippet;
 	onclick?: (event: Event) => void;
+	class?: string;
 }
 
 export interface InputProps {

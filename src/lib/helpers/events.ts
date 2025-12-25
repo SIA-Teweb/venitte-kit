@@ -1,5 +1,7 @@
 export function clickOutside(node: Node) {
 	const handleClick = ((event: Event) => {
+		event.stopPropagation();
+
 		if (node && !node.contains(event.target as HTMLElement) && !event.defaultPrevented) {
 			node.dispatchEvent(new CustomEvent('clickoutside', node as CustomEventInit));
 		}

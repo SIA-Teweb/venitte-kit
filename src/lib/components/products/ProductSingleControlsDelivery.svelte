@@ -53,7 +53,7 @@
 	});
 </script>
 
-<Badge onclick={openDeliveryChangeForm}>
+<Badge class="relative" onclick={openDeliveryChangeForm}>
 	<Van />
 	{#if $formValues && $formValues.country}
 		{$t('shop.deliveryTime')} ({$t(`common.countries.${countryLabel}`)}):

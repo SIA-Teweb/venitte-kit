@@ -38,6 +38,7 @@
 		product.variants.reduce((total, variation) => total + variation.amount, 0)
 	);
 	let url = page.url;
+	let shareBoxAnchor: HTMLElement;
 
 	// #region Functions
 
@@ -101,6 +102,7 @@
 	}
 
 	function openSharingBox(event: Event) {
+		const target = event.target as HTMLElement;
 		if (isMobileScreen()) {
 			createDialog({
 				title: $t('common.shareThis'),
@@ -110,7 +112,7 @@
 			});
 		} else {
 			openPopover({
-				target: event.currentTarget as HTMLElement,
+				target: shareBoxAnchor,
 				content: {
 					component: ShareLinkButtons
 				}
@@ -157,9 +159,9 @@
 			/>
 		</FormItem>
 	{/each}
-	<div class="flex gap-2 flex-wrap sm:flex-nowrap">
+	<div class="flex gap-2 flex-wrap sm:flex-nowrap" bind:this={shareBoxAnchor}>
 		<ProductWishListButton id={product.id} />
-		<Button icon={Share2} preset="tonal" onclick={openSharingBox} />
+		<Button class="relative" icon={Share2} preset="tonal" onclick={openSharingBox} />
 		<Button
 			label={$t('shop.addToCart')}
 			icon={ShoppingBasket}

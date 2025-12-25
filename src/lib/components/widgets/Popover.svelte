@@ -1,38 +1,23 @@
 <script lang="ts">
 	import { clickOutside } from '$lib/helpers/events';
-	import { scrollLocker } from '$lib/helpers/layout';
 	import { closePopover } from '$lib/helpers/popover';
-	import { onMount } from 'svelte';
-	import { cubicIn } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
-	let { x, y, width = 'auto', content, onClose } = $props();
+	let { content, close, width = '' } = $props();
 
-	let isOpened = $state(false);
-	let popoverRef: HTMLDivElement | undefined = $state();
-
-	const TheComponent = $derived(content.component);
-
-	function close() {
-		isOpened = false;
-		closePopover();
-		onClose?.();
-	}
-
-	onMount(() => {
-		isOpened = true;
-	});
+	let TheComponent = $derived(content.component);
 </script>
 
-{#if isOpened}
-	<div
-		bind:this={popoverRef}
-		style="left: {x}px; top: {y}px; width: {width}"
-		class="absolute z-50 mt-2 transform translate-x-[-50%] rounded-xl bg-white p-4 shadow"
-		transition:scale={{ duration: 200, easing: cubicIn }}
-		use:clickOutside
-		onclickoutside={close}
-	>
-		<TheComponent closePopover={close} {...content.props} />
-	</div>
-{/if}
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<div
+	class="absolute mt-2 z-20 top-full bg-surface-50 p-4 rounded-xl shadow {width === 'parent'
+		? 'w-full left-0'
+		: 'w-auto'}"
+	use:clickOutside
+	onclickoutside={() => close?.()}
+	onclick={(e) => e.stopImmediatePropagation()}
+	transition:scale={{ duration: 200 }}
+>
+	<TheComponent {...content.props} closePopover={close} />
+</div>
