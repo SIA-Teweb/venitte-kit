@@ -6,12 +6,12 @@
 	import type { PriceObjectProps, ProductSingle, ProductVariant } from '$lib/types/products';
 	import ProductWishListButton from './ProductWishListButton.svelte';
 	import { addToCart } from '$lib/helpers/cart';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { page } from '$app/state';
 	import Selector from '../ui/Selector.svelte';
 	import FormItem from '../ui/FormItem.svelte';
 	import type { SelectOption } from '$lib/types/ui';
-	import { goto } from '$app/navigation';
+	import { goto, replaceState } from '$app/navigation';
 	import ShareLinkButtons from '../widgets/ShareLinkButtons.svelte';
 	import { isMobileScreen } from '$lib/helpers/layout';
 	import { createDialog } from '$lib/stores/dialogs';
@@ -102,7 +102,6 @@
 	}
 
 	function openSharingBox(event: Event) {
-		const target = event.target as HTMLElement;
 		if (isMobileScreen()) {
 			createDialog({
 				title: $t('common.shareThis'),
@@ -132,7 +131,9 @@
 			};
 			totalStock = chosenVariation.amount;
 			url.searchParams.set('variant', String(chosenVariation.id));
-			goto(url, { replaceState: true });
+			tick().then(() => {
+				replaceState(url, { replaceState: true });
+			});
 		} else {
 			totalStock = initialTotalStock;
 		}
@@ -159,7 +160,7 @@
 			/>
 		</FormItem>
 	{/each}
-	<div class="flex gap-2 flex-wrap sm:flex-nowrap" bind:this={shareBoxAnchor}>
+	<div class="flex gap-2 overflow-x-scroll no-scrollbar flex-nowrap" bind:this={shareBoxAnchor}>
 		<ProductWishListButton id={product.id} />
 		<Button class="relative" icon={Share2} preset="tonal" onclick={openSharingBox} />
 		<Button

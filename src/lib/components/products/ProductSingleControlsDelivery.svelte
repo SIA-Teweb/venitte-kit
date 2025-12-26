@@ -55,15 +55,16 @@
 
 <Badge class="relative" onclick={openDeliveryChangeForm}>
 	<Van />
-	{#if $formValues && $formValues.country}
+	{#if $formValues && $formValues.country && countryLabel}
 		{$t('shop.deliveryTime')} ({$t(`common.countries.${countryLabel}`)}):
+
+		{#if !chosenVariation}
+			{$t('common.chooseOption')}
+		{/if}
+		{#if deliveryData}
+			{formatDateShort(deliveryData.from)} - {formatDateShort(deliveryData.to)}
+		{/if}
 	{:else}
 		{$t('shop.enterAddress')}
-	{/if}
-	{#if !chosenVariation}
-		{$t('common.chooseOption')}
-	{/if}
-	{#if deliveryData}
-		{formatDateShort(deliveryData.from)} - {formatDateShort(deliveryData.to)}
 	{/if}
 </Badge>

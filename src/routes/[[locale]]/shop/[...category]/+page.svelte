@@ -73,7 +73,7 @@
 		<CategoriesBreadCrumbs categories={data.trail} />
 	{/snippet}
 	{#snippet controls()}
-		<div class="flex gap-2">
+		<div class="grid grid-cols-[1fr_1fr] w-full sm:flex sm:w-auto gap-2">
 			<Select options={sortOptions} onchange={changeOrder} />
 			<Button
 				preset="tonal"

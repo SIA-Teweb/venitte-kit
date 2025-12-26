@@ -12,7 +12,7 @@
 	{/if}
 	<div class="flex flex-col gap-0.5">
 		{#if label}
-			<span class="text-xs font-normal leading-5">{label}</span>
+			<span class="text-xs font-normal leading-none">{label}</span>
 		{/if}
 		<span class="text-base font-medium leading-5">{value}</span>
 	</div>
