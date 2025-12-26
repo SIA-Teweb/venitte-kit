@@ -3,16 +3,22 @@
 	import { ChevronsUpDown } from '@lucide/svelte';
 	import Badge from './Badge.svelte';
 	import Input from './Input.svelte';
-	import { clickOutside } from '$lib/helpers/events';
 	import SelectList from './SelectList.svelte';
+	import { openPopover } from '$lib/helpers/popover';
+	import { isMobileScreen } from '$lib/helpers/layout';
+	import { createDialog } from '$lib/stores/dialogs';
 
 	let {
 		options,
 		placeholder = '',
 		values = $bindable()
-	}: { options: SelectOption[]; placeholder: string; values: SelectOption['value'][] } = $props();
+	}: {
+		options: SelectOption[];
+		placeholder: string;
+		values: SelectOption['value'][];
+	} = $props();
+
 	let searchValue = $state('');
-	let isOpened = $state(false);
 	let localOptions = $derived(constructLocalOptions());
 
 	function chooseOption(value: SelectOption['value']) {
@@ -32,8 +38,37 @@
 			}));
 	}
 
-	function onFocus() {
-		isOpened = !isOpened;
+	function onInputClick(event: Event) {
+		const target = event.currentTarget as HTMLElement;
+
+		if (isMobileScreen()) {
+			createDialog({
+				title: 'Choose option',
+				content: {
+					component: SelectList,
+					props: {
+						onchoose: chooseOption
+					},
+					getProps: () => ({
+						options: localOptions
+					})
+				}
+			});
+		} else {
+			openPopover({
+				target: target.parentElement!,
+				width: 'parent',
+				content: {
+					component: SelectList,
+					props: {
+						onchoose: chooseOption
+					},
+					getProps: () => ({
+						options: localOptions
+					})
+				}
+			});
+		}
 	}
 
 	$effect(() => {
@@ -44,16 +79,13 @@
 </script>
 
 <div class="relative">
-	<Input bind:value={searchValue} onclick={onFocus} {placeholder} afterIcon={ChevronsUpDown} />
-	{#if isOpened}
-		<div
-			class="absolute p-2 w-full h-[500%] overflow-scroll top-[110%] no-scrollbar z-50 preset-bordered-card bg-surface-50"
-			use:clickOutside
-			onclickoutside={() => (isOpened = false)}
-		>
-			<SelectList options={localOptions} onchoose={chooseOption} />
-		</div>
-	{/if}
+	<Input
+		bind:value={searchValue}
+		onclick={onInputClick}
+		{placeholder}
+		afterIcon={ChevronsUpDown}
+		readonly={isMobileScreen()}
+	/>
 </div>
 {#if values.length > 0}
 	<div class="flex flex-wrap gap-2 mt-2">

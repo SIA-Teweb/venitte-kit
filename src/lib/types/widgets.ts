@@ -1,4 +1,4 @@
-import type { Component } from '@lucide/svelte';
+import type { Component, ComponentIcon } from '@lucide/svelte';
 import type { Image } from './general';
 import type { ComponentTypeProp } from './ui';
 
@@ -25,7 +25,7 @@ export interface DialogProps<P> {
 	id: string;
 	title: string;
 	content: string | ComponentTypeProp<P>;
-	icon?: Component;
+	icon?: typeof ComponentIcon;
 }
 
 export type DialogInitProps = Omit<DialogProps<unknown>, 'id'>;

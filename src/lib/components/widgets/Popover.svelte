@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { clickOutside } from '$lib/helpers/events';
-	import { closePopover } from '$lib/helpers/popover';
 	import { scale } from 'svelte/transition';
 
 	let { content, close, width = '' } = $props();
 
 	let TheComponent = $derived(content.component);
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (e.key === 'Escape') close?.();
+	}
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
 	class="absolute mt-2 z-20 top-full bg-surface-50 p-4 rounded-xl shadow {width === 'parent'
 		? 'w-full left-0'
@@ -18,6 +19,9 @@
 	onclickoutside={() => close?.()}
 	onclick={(e) => e.stopImmediatePropagation()}
 	transition:scale={{ duration: 200 }}
+	role="dialog"
+	tabindex="-1"
+	onkeydown={handleKeydown}
 >
-	<TheComponent {...content.props} closePopover={close} />
+	<TheComponent {...content.props} {...content.getProps?.()} closePopover={close} />
 </div>

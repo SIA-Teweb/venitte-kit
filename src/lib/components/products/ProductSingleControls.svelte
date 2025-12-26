@@ -160,7 +160,7 @@
 			/>
 		</FormItem>
 	{/each}
-	<div class="flex gap-2 overflow-x-scroll no-scrollbar flex-nowrap" bind:this={shareBoxAnchor}>
+	<div class="flex gap-2 flex-nowrap" bind:this={shareBoxAnchor}>
 		<ProductWishListButton id={product.id} />
 		<Button class="relative" icon={Share2} preset="tonal" onclick={openSharingBox} />
 		<Button

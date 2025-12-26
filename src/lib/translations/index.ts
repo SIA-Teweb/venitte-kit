@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { goto } from '$app/navigation';
+import { replaceState } from '$app/navigation';
 import { page } from '$app/state';
 import { LOCALE_STORAGE_KEY } from '$lib/constants/storage';
 import storage from '$lib/helpers/storage';
@@ -47,7 +47,7 @@ export function setLocale(newLocale: string) {
 		const parts = page.url.pathname.split('/').filter(Boolean);
 		parts[0] = newLocale;
 		// eslint-disable-next-line svelte/no-navigation-without-resolve
-		return goto('/' + parts.join('/'), { replaceState: true });
+		return replaceState('/' + parts.join('/'), page.state);
 	}
 }
 

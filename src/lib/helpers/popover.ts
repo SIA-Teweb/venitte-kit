@@ -1,35 +1,61 @@
 import type { PopoverInitProps } from '$lib/types/widgets';
 import { mount, unmount } from 'svelte';
-import { scrollLocker } from './layout';
 import Popover from '$lib/components/widgets/Popover.svelte';
 
-let popoverInstance: Record<string, Popover> | undefined = undefined;
-let target: HTMLElement | undefined = undefined;
+type PopoverInstance = {
+	id: string;
+	component: object;
+	target: HTMLElement;
+};
+
+const popovers: PopoverInstance[] = [];
 
 export function openPopover<T>(data: PopoverInitProps<T>) {
-	if (popoverInstance || target) {
+	if (popovers.find((p) => p.target === data.target)) {
 		return;
 	}
 
-	target = data.target;
+	const target = data.target;
+	const id = crypto.randomUUID();
+
 	target.classList.add('relative', 'z-20');
 
-	popoverInstance = mount(Popover, {
+	const instance = mount(Popover, {
 		target: data.target,
-		props: { ...data, close: closePopover }
+		props: {
+			...data,
+			close: () => closePopover(id)
+		}
 	});
 
-	scrollLocker(true);
+	popovers.push({ id, component: instance, target });
 }
 
-export function closePopover() {
-	if (popoverInstance) {
-		unmount(popoverInstance, { outro: true });
-		popoverInstance = undefined;
-		setTimeout(() => {
-			target?.classList.remove('relative', 'z-20');
-			target = undefined;
-		}, 200);
+export function closePopover(id?: string) {
+	if (!id) {
+		if (popovers.length === 0) return;
+		id = popovers[popovers.length - 1].id;
 	}
-	scrollLocker(false);
+
+	const index = popovers.findIndex((p) => p.id === id);
+	if (index === -1) return;
+
+	const { component, target } = popovers[index];
+
+	unmount(component, { outro: true });
+
+	setTimeout(() => {
+		const isTargetUsedByOther = popovers.some((p) => p.target === target && p.id !== id);
+		if (!isTargetUsedByOther) {
+			target.classList.remove('relative', 'z-20');
+		}
+	}, 200);
+
+	popovers.splice(index, 1);
+}
+
+export function closeAllPopovers() {
+	while (popovers.length > 0) {
+		closePopover();
+	}
 }

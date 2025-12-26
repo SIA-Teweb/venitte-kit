@@ -17,7 +17,8 @@ export function createDialog(data: DialogInitProps) {
 							props: {
 								...data.content.props!,
 								closeDialog: () => closeDialog(randomId)
-							}
+							},
+							getProps: data.content.getProps
 						},
 			icon: data.icon
 		};

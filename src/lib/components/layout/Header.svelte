@@ -12,24 +12,42 @@
 	import MenuButton from '../ui/MenuButton.svelte';
 	import { goto } from '$app/navigation';
 	import { route, ROUTES } from '$lib/constants/routes';
-	import { locale, t } from '$lib/translations';
+	import { locale, setLocale, t } from '$lib/translations';
 	import { sidebarStore } from '$lib/stores/sidebar';
 	import CategoriesMenu from '../categories/CategoriesMenu.svelte';
 	import { page } from '$app/state';
 	import { createDialog } from '$lib/stores/dialogs';
-	import LanguageSwitch from '../widgets/LanguageSwitch.svelte';
 	import { openPopover } from '$lib/helpers/popover';
 	import { lastShopLinkStore, previousUrl } from '$lib/stores/navigation';
 	import SearchBar from '../widgets/SearchBar.svelte';
 	import { cartStore } from '$lib/stores/cart';
 	import Badge from '../ui/Badge.svelte';
+	import { isMobileScreen } from '$lib/helpers/layout';
+	import SelectList from '../ui/SelectList.svelte';
 
 	let isSearchBarOpen = $state(false);
+
+	let languageOptions = $derived([
+		{
+			label: 'Русский',
+			value: 'ru',
+			active: $locale === 'ru'
+		},
+		{
+			label: 'English',
+			value: 'en',
+			active: $locale === 'en'
+		},
+		{
+			label: 'Latviešu',
+			value: 'lv',
+			active: $locale === 'lv'
+		}
+	]);
 
 	const isActiveButton = (route: string) => page.url.pathname === route;
 
 	function openCategoriesDrawer() {
-		console.log(page.url.pathname, route(ROUTES.SHOP, $locale));
 		if (!page.url.pathname.startsWith(route(ROUTES.SHOP, $locale)) && $lastShopLinkStore) {
 			goto($lastShopLinkStore);
 
@@ -46,13 +64,36 @@
 		});
 	}
 
-	function openLanguageSelect() {
-		createDialog({
-			title: $t('common.switchLanguage'),
-			content: {
-				component: LanguageSwitch
-			}
-		});
+	function openLanguageSelect(event: Event) {
+		if (isMobileScreen()) {
+			createDialog({
+				title: $t('common.switchLanguage'),
+				content: {
+					component: SelectList,
+					props: {
+						onchoose: setLocale,
+						closeOnChoose: true
+					},
+					getProps: () => ({
+						options: languageOptions
+					})
+				}
+			});
+		} else {
+			const target = event.currentTarget as HTMLElement;
+			openPopover({
+				target,
+				content: {
+					component: SelectList,
+					props: {
+						onchoose: setLocale
+					},
+					getProps: () => ({
+						options: languageOptions
+					})
+				}
+			});
+		}
 	}
 </script>
 
@@ -77,17 +118,7 @@
 			isActive={page.url.pathname.startsWith(route(ROUTES.SHOP, $locale))}
 		/>
 		<SearchBar />
-		<MenuButton
-			icon={Languages}
-			label={$t(`common.${$locale}`)}
-			onclick={(event: Event) =>
-				openPopover({
-					target: event.currentTarget as HTMLElement,
-					content: {
-						component: LanguageSwitch
-					}
-				})}
-		/>
+		<MenuButton icon={Languages} label={$t(`common.${$locale}`)} onclick={openLanguageSelect} />
 		<MenuButton
 			icon={Heart}
 			label={$t('common.wishList')}

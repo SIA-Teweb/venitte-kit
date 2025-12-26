@@ -12,10 +12,12 @@
 
 	let {
 		avaliableFilters,
-		closeSidebar
+		closeSidebar,
+		closeDialog
 	}: {
 		avaliableFilters: Promise<AvaliableFiltersResponse>;
-		closeSidebar: () => void;
+		closeSidebar: (() => void) | undefined;
+		closeDialog: (() => void) | undefined;
 	} = $props();
 
 	const url = new URL(page.url);
@@ -30,7 +32,6 @@
 	});
 
 	function resetFilters(filters: AvaliableFiltersResponse) {
-		console.log(filters);
 		payload = {
 			brands: [],
 			fromPrice: filters.minPrice,
@@ -38,39 +39,41 @@
 			page: 1
 		};
 		onAcceptFilters();
-		closeSidebar?.();
 	}
 
 	function onAcceptFilters() {
 		generateCategoriesUrl(url, payload);
 		goto(url);
 		closeSidebar?.();
+		closeDialog?.();
 	}
 </script>
 
 {#await avaliableFilters then filters}
-	<FormItem label={$t('shop.brand')}>
-		<MultipleSelect
-			options={filters.brands.map((brand) => ({ label: brand.name, value: brand.id }))}
-			bind:values={payload.brands}
-			placeholder={$t('shop.choose')}
-		/>
-	</FormItem>
-	<FormItem label={$t('shop.price')}>
-		<Slider
-			min={filters.minPrice}
-			max={filters.maxPrice}
-			bind:minValue={payload.fromPrice}
-			bind:maxValue={payload.toPrice}
-		/>
-	</FormItem>
-	<div class="mt-4 flex flex-col gap-2">
-		<Button icon={Check} label={$t('common.accept')} onclick={onAcceptFilters} />
-		<Button
-			preset="tonal"
-			icon={XIcon}
-			label={$t('common.clearAll')}
-			onclick={() => resetFilters(filters)}
-		/>
+	<div class="flex flex-col gap-2">
+		<FormItem label={$t('shop.brand')}>
+			<MultipleSelect
+				options={filters.brands.map((brand) => ({ label: brand.name, value: brand.id }))}
+				bind:values={payload.brands}
+				placeholder={$t('shop.choose')}
+			/>
+		</FormItem>
+		<FormItem label={$t('shop.price')}>
+			<Slider
+				min={filters.minPrice}
+				max={filters.maxPrice}
+				bind:minValue={payload.fromPrice}
+				bind:maxValue={payload.toPrice}
+			/>
+		</FormItem>
+		<div class="mt-4 flex flex-col gap-2">
+			<Button icon={Check} label={$t('common.accept')} onclick={onAcceptFilters} />
+			<Button
+				preset="tonal"
+				icon={XIcon}
+				label={$t('common.clearAll')}
+				onclick={() => resetFilters(filters)}
+			/>
+		</div>
 	</div>
 {/await}

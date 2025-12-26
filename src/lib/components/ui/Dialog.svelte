@@ -8,21 +8,21 @@
 </script>
 
 {#each $dialogs as dialog (dialog.id)}
+	{@const Icon = dialog.icon}
 	{@const TheComponent = typeof dialog.content !== 'string' ? dialog.content.component : undefined}
 	<div
 		class="fixed inset-0 z-50 bg-surface-50/50 backdrop-blur-xs will-change-auto backface-hidden transform-gpu"
 		transition:fade={{ duration: 300 }}
+		onclickcapture={() => closeDialog(dialog.id)}
 	></div>
 	<div
-		class="fixed right-4 z-51 rounded-xl bottom-0 left-4 mx-auto mb-4 max-w-sm space-y-4 card bg-surface-50 p-4 md:p-6 shadow-xl dark:bg-surface-900"
+		class="fixed right-4 z-50 rounded-xl bottom-0 left-4 mx-auto mb-4 max-w-sm space-y-4 card bg-surface-50 p-4 md:p-6 shadow-xl dark:bg-surface-900"
 		transition:fly={{ y: 200, duration: 300, easing: cubicOut }}
-		use:clickOutside
-		onclickoutside={() => closeDialog(dialog.id)}
 	>
 		<header class="flex items-center justify-between">
 			<div class="flex items-center gap-2">
-				{#if dialog.icon}
-					<svelte:component this={dialog.icon} />
+				{#if Icon}
+					<Icon />
 				{/if}
 				<span class="text-lg font-bold">
 					{$t(dialog.title)}
@@ -36,7 +36,11 @@
 			{#if typeof dialog.content === 'string'}
 				{dialog.content}
 			{:else}
-				<TheComponent {...dialog.content.props} />
+				<TheComponent
+					{...dialog.content.props!}
+					{...dialog.content.getProps?.()!}
+					closeDialog={() => closeDialog(dialog.id)}
+				/>
 			{/if}
 		</article>
 	</div>

@@ -36,6 +36,7 @@ export interface InputProps {
 	ref?: HTMLElement;
 	name?: string;
 	class?: string;
+	readonly?: boolean;
 	oninput?: (event: Event) => void;
 	onfocus?: (event: Event) => void;
 	onclick?: (event: Event) => void;
@@ -57,6 +58,7 @@ export type ComponentTypeProp<P> = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	component: Component<any>;
 	props?: P;
+	getProps?: () => unknown;
 };
 
 export interface SideBarInitProps {

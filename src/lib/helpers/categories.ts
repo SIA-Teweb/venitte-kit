@@ -66,10 +66,16 @@ export function parseCategoriesUrl(url: URL): CategoriesFiltersPayload {
 	return payload;
 }
 
+export function parseCategoriesUrlKey(url: URL, key: string) {
+	const value = url.searchParams.get(key);
+	if (!isParserKey(key) || !value) return;
+	return filterParsers[key](value);
+}
+
 // Generating categories url
 export function generateCategoriesUrl(url: URL, filters: FilterEntry) {
 	for (const [key, value] of Object.entries(filters)) {
-		if (!value) continue;
+		if (value === undefined && value === null) continue;
 
 		url.searchParams.set(key, JSON.stringify(value));
 	}

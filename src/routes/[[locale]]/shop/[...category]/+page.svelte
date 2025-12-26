@@ -12,16 +12,16 @@
 	import { sidebarStore } from '$lib/stores/sidebar';
 	import CategoriesFilters from '$lib/components/categories/CategoriesFilters.svelte';
 	import { page } from '$app/state';
-	import { generateCategoriesUrl } from '$lib/helpers/categories';
+	import { generateCategoriesUrl, parseCategoriesUrlKey } from '$lib/helpers/categories';
 	import { onDestroy } from 'svelte';
 	import { lastShopLinkStore } from '$lib/stores/navigation';
+	import { isMobileScreen } from '$lib/helpers/layout';
+	import { createDialog } from '$lib/stores/dialogs';
 
 	let { data }: PageProps = $props();
 
 	const url = $derived(new URL(page.url));
-	let currentPage: number = $derived(
-		url.searchParams.get('page') ? Number(url.searchParams.get('page')) : 1
-	);
+	let currentPage: number = $derived((parseCategoriesUrlKey(url, 'page') as number) ?? 1);
 	const sortOptions = $derived([
 		{ value: 'createdAt.desc', label: $t('common.newFirst') },
 		{ value: 'createdAt.asc', label: $t('common.oldFirst') },
@@ -29,37 +29,50 @@
 		{ value: 'price.desc', label: $t('common.expensiveFirst') }
 	]);
 
+	let sortValue: string = $derived.by(() => {
+		const sortUrlString = url.searchParams.get('sort');
+		return sortUrlString ? JSON.parse(sortUrlString) : sortOptions[0].value;
+	});
+
 	function changePage(newPage: number) {
 		currentPage = newPage;
 		generateCategoriesUrl(url, { page: newPage });
 		goto(url, { replaceState: true });
 	}
 
-	function changeOrder(value: string) {
+	function changeOrder(value: string | number) {
 		generateCategoriesUrl(url, { sort: value, page: 1 });
 		goto(url, { replaceState: true });
 	}
 
 	function openCategoriesFilters() {
-		sidebarStore.open({
-			id: 'category-filters',
-			title: $t('common.filtrs'),
-			side: 'right',
-			content: {
-				component: CategoriesFilters,
-				props: {
-					avaliableFilters: data.avaliableFilters
+		if (isMobileScreen()) {
+			createDialog({
+				title: $t('common.filtrs'),
+				content: {
+					component: CategoriesFilters,
+					props: {
+						avaliableFilters: data.avaliableFilters
+					}
 				}
-			}
-		});
+			});
+		} else {
+			sidebarStore.open({
+				id: 'category-filters',
+				title: $t('common.filtrs'),
+				side: 'right',
+				content: {
+					component: CategoriesFilters,
+					props: {
+						avaliableFilters: data.avaliableFilters
+					}
+				}
+			});
+		}
 	}
 
 	onDestroy(() => {
 		lastShopLinkStore.set(url);
-	});
-
-	$effect(() => {
-		// console.log(data);
 	});
 </script>
 
@@ -74,7 +87,7 @@
 	{/snippet}
 	{#snippet controls()}
 		<div class="grid grid-cols-[1fr_1fr] w-full sm:flex sm:w-auto gap-2">
-			<Select options={sortOptions} onchange={changeOrder} />
+			<Select options={sortOptions} value={sortValue} onchange={changeOrder} />
 			<Button
 				preset="tonal"
 				icon={SlidersHorizontal}
