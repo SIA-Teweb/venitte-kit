@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { Check, Eraser, XIcon } from '@lucide/svelte';
+	import { Check, XIcon } from '@lucide/svelte';
 	import Slider from '../ui/Slider.svelte';
 	import { t } from '$lib/translations';
 	import Button from '../ui/Button.svelte';
-	import MultipleSelect from '../ui/MultipleSelect.svelte';
 	import type { AvaliableFiltersResponse } from '$lib/types/categories';
 	import FormItem from '../ui/FormItem.svelte';
 	import { generateCategoriesUrl, parseCategoriesUrl } from '$lib/helpers/categories';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import NewSelect from '../ui/NewSelect.svelte';
 
 	let {
 		avaliableFilters,
@@ -52,10 +52,17 @@
 {#await avaliableFilters then filters}
 	<div class="flex flex-col gap-2">
 		<FormItem label={$t('shop.brand')}>
-			<MultipleSelect
+			<!-- <MultipleSelect
 				options={filters.brands.map((brand) => ({ label: brand.name, value: brand.id }))}
 				bind:values={payload.brands}
 				placeholder={$t('shop.choose')}
+			/> -->
+			<NewSelect
+				name="brands"
+				options={filters.brands.map((brand) => ({ label: brand.name, value: brand.id }))}
+				bind:value={payload.brands}
+				placeholder={$t('shop.choose')}
+				multiple
 			/>
 		</FormItem>
 		<FormItem label={$t('shop.price')}>

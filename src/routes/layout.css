@@ -19,6 +19,40 @@
 	}
 }
 
+@layer base {
+	[data-scope='steps'] {
+		&[data-part='indicator'] {
+			&[data-complete] {
+				background-color: var(--color-tertiary-500);
+				color: var(--color-tertiary-contrast-500);
+			}
+			&[data-current] {
+				border-width: 1px;
+				border-color: var(--color-tertiary-500);
+			}
+		}
+		&[data-part='separator'] {
+			&[data-complete] {
+				border-color: var(--color-tertiary-500);
+			}
+		}
+		&[data-part='next-trigger'] {
+			&:disabled {
+				display: none;
+			}
+		}
+		&[data-part='prev-trigger'] {
+			&:disabled {
+				display: none;
+			}
+		}
+	}
+}
+
+[data-theme='cerberus'] {
+	--body-background-color: #ffffff;
+}
+
 .preset-bordered-card {
 	border: 1px solid var(--color-surface-200);
 	border-radius: var(--radius-xl);

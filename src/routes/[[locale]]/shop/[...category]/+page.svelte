@@ -8,7 +8,6 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import CategoriesBreadCrumbs from '$lib/components/categories/CategoriesBreadCrumbs.svelte';
 	import { SlidersHorizontal } from '@lucide/svelte';
-	import Select from '$lib/components/ui/Select.svelte';
 	import { sidebarStore } from '$lib/stores/sidebar';
 	import CategoriesFilters from '$lib/components/categories/CategoriesFilters.svelte';
 	import { page } from '$app/state';
@@ -17,6 +16,7 @@
 	import { lastShopLinkStore } from '$lib/stores/navigation';
 	import { isMobileScreen } from '$lib/helpers/layout';
 	import { createDialog } from '$lib/stores/dialogs';
+	import NewSelect from '$lib/components/ui/NewSelect.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -87,7 +87,7 @@
 	{/snippet}
 	{#snippet controls()}
 		<div class="grid grid-cols-[1fr_1fr] w-full sm:flex sm:w-auto gap-2">
-			<Select options={sortOptions} value={sortValue} onchange={changeOrder} />
+			<NewSelect options={sortOptions} value={sortValue} onchange={changeOrder} />
 			<Button
 				preset="tonal"
 				icon={SlidersHorizontal}

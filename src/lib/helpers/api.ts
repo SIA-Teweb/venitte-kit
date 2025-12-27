@@ -58,6 +58,7 @@ export const api = {
 			post<Variant[]>('/shop/variants/many', garbageVariationsPayload(variantIds))
 	},
 	orders: {
+		getSettings: () => get('/shop/settings'),
 		getDeliveryData: (payload: DeliveryPayload) =>
 			post<DeliveryResponse>('/shop/orders/previewdelivery', payload),
 		checkOrder: (payload: { code: string; email: string }) =>

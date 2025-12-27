@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { t } from '$lib/translations';
+
 	let {
 		children,
 		label,
@@ -20,7 +22,7 @@
 	{#if errors && errors.length > 0}
 		<div class="flex flex-col gap-2">
 			{#each errors as error}
-				<span class="label-text text-red-500">{error}</span>
+				<span class="label-text text-red-500">{$t(`errors.${error}`)}</span>
 			{/each}
 		</div>
 	{/if}

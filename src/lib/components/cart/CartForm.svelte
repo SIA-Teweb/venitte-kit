@@ -12,6 +12,8 @@
 	import Checkbox from '../ui/Checkbox.svelte';
 	import { isMobileScreen } from '$lib/helpers/layout';
 	import { formValues } from '$lib/stores/forms';
+	import InputPhone from '../ui/InputPhone.svelte';
+	import NewSelect from '../ui/NewSelect.svelte';
 
 	let { orderForm } = $props();
 	const { errors } = $derived(orderForm);
@@ -21,9 +23,13 @@
 		{ title: $t('shop.delivery') },
 		{ title: $t('shop.additional') }
 	];
+
+	$effect(() => {
+		console.log($errors);
+	});
 </script>
 
-<Section title={$t('shop.placeOrder')} class="preset-bordered-card block">
+<Section title={$t('shop.placeOrder')} class="preset-bordered-card p-4 block">
 	<Steps
 		orientation={isMobileScreen() ? 'horizontal' : 'vertical'}
 		count={steps.length - 1}
@@ -31,8 +37,10 @@
 	>
 		<Steps.List>
 			{#each steps as item, index}
-				<Steps.Item {index}>
-					<Steps.Trigger class="flex gap-4 flex-col md:flex-row">
+				<Steps.Item {index} class="">
+					<Steps.Trigger
+						class="flex gap-4 flex-col md:flex-row text-xs data-[state=active]:bg-red-500"
+					>
 						<Steps.Indicator>{index + 1}</Steps.Indicator>
 						{item.title}
 					</Steps.Trigger>
@@ -46,11 +54,11 @@
 			{#each steps as item, index}
 				<Steps.Content {index} class="flex flex-col gap-4">
 					{#if index === 0}
-						<FormItem label={$t('common.name')} errors={$errors.firstName}>
-							<Input name="firstName" bind:value={$formValues.firstName} placeholder="Jānis" />
+						<FormItem label={$t('common.name')} errors={$errors.firstname}>
+							<Input name="firstname" bind:value={$formValues.firstname} placeholder="Jānis" />
 						</FormItem>
-						<FormItem label={$t('common.surname')} errors={$errors.lastName}>
-							<Input name="lastName" bind:value={$formValues.lastName} placeholder="Berziņš" />
+						<FormItem label={$t('common.surname')} errors={$errors.lastname}>
+							<Input name="lastname" bind:value={$formValues.lastname} placeholder="Berziņš" />
 						</FormItem>
 						<FormItem label={$t('common.email')} errors={$errors.email}>
 							<Input
@@ -59,31 +67,49 @@
 								placeholder="janis.berzins@venitte.shop"
 							/>
 						</FormItem>
+						<FormItem label={$t('common.phone')} errors={$errors.phone}>
+							<InputPhone name="phone" bind:value={$formValues.phone} />
+						</FormItem>
 					{:else if index === 1}
-						<FormItem label={$t('common.country')}>
-							<Select
+						<FormItem label={$t('common.country')} errors={$errors.country}>
+							<NewSelect
 								name="country"
 								options={countries.map((country) => ({
 									label: $t(`common.countries.${country.label}`),
 									value: country.iso
 								}))}
+								placeholder={$t('common.chooseSomething')}
 								bind:value={$formValues.country}
 							/>
 						</FormItem>
-						<FormItem label={$t('common.postcode')}>
-							<Input name="postcode" bind:value={$formValues.postcode} />
+						<FormItem label={$t('common.postcode')} errors={$errors.postcode}>
+							<Input name="postcode" placeholder="LV-1029" bind:value={$formValues.postcode} />
 						</FormItem>
-						<FormItem label={$t('common.city')}>
-							<Input />
+						<FormItem label={$t('common.city')} errors={$errors.postcode}>
+							<Input name="city" placeholder="Rīga" bind:value={$formValues.city} />
+						</FormItem>
+						<FormItem label={$t('common.address')} errors={$errors.address}>
+							<Input
+								name="address"
+								placeholder="Brīvības iela 49/53"
+								bind:value={$formValues.address}
+							/>
+						</FormItem>
+						<FormItem label={$t('common.address')} errors={$errors.address}>
+							<Input
+								name="address"
+								placeholder="Brīvības iela 49/53"
+								bind:value={$formValues.address}
+							/>
 						</FormItem>
 					{:else if index === 2}
-						<FormItem label={$t('shop.promocode')}>
+						<FormItem label={$t('shop.promo')}>
 							<Input />
 						</FormItem>
 						<FormItem label={$t('shop.comments')}>
 							<TextArea />
 						</FormItem>
-						<Checkbox name="agreed" label={$t('shop.agreeRules')} />
+						<Checkbox name="rulesAgreed" label={$t('shop.agreeRules')} />
 					{/if}
 					<div class="flex justify-between items-center gap-2 mt-4">
 						<Steps.PrevTrigger>

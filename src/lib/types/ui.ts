@@ -74,3 +74,25 @@ export interface SelectOption {
 	active?: boolean;
 	disabled?: boolean;
 }
+
+// export interface SelectProps {
+// 	name: string;
+// 	options: SelectOption[];
+// 	value: number | string | number[] | string[];
+// 	placeholder: string;
+// 	class: string;
+// 	multiple: boolean;
+// 	onchange?: (value: string | number) => void;
+// }
+
+type SingleValue = string | number;
+
+export interface SelectProps<T extends SingleValue = SingleValue, M extends boolean = false> {
+	name?: string;
+	options: SelectOption[];
+	placeholder?: string;
+	class?: string;
+	multiple?: M;
+	value: M extends true ? T[] : T;
+	onchange?: (value: M extends true ? T[] : T) => void;
+}

@@ -18,6 +18,7 @@ export async function load() {
 			deliveryType: '',
 			postcode: postcode,
 			items: cartItems
-		})
+		}),
+		settingsPromise: api.orders.getSettings()
 	};
 }

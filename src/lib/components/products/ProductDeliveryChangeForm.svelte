@@ -3,10 +3,10 @@
 	import { t } from '$lib/translations';
 	import FormItem from '../ui/FormItem.svelte';
 	import Input from '../ui/Input.svelte';
-	import Select from '../ui/Select.svelte';
 	import countries from '$lib/constants/countries.json';
 	import { Check, XIcon } from '@lucide/svelte';
 	import Button from '../ui/Button.svelte';
+	import NewSelect from '../ui/NewSelect.svelte';
 
 	let { closeDialog = undefined, closePopover = undefined } = $props();
 
@@ -21,7 +21,7 @@
 
 <form use:deliveryForm.form class="flex flex-col gap-2">
 	<FormItem label={$t('common.country')} errors={$errors.country}>
-		<Select
+		<NewSelect
 			name="country"
 			options={countries.map((country) => ({
 				label: $t(`common.countries.${country.label}`),
