@@ -8,6 +8,7 @@
 	import MessengerIcon from '$lib/assets/social/messenger.svg';
 	import { t } from '$lib/translations';
 	import FormItem from '../ui/FormItem.svelte';
+	import { showSuccessToast } from '$lib/helpers/toaster';
 
 	interface ShareButton {
 		method: string;
@@ -32,8 +33,10 @@
 	];
 
 	function copyToClipboard() {
-		console.log('auf');
 		navigator.clipboard.writeText(url);
+		showSuccessToast({
+			description: $t('common.linkCopied')
+		});
 	}
 
 	function onClick(action: ShareButton['action']) {

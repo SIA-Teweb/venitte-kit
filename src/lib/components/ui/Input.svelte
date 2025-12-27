@@ -12,6 +12,7 @@
 		readonly = false,
 		oninput,
 		onfocus,
+		onblur,
 		onclick,
 		ref = $bindable()
 	}: InputProps = $props();
@@ -37,6 +38,7 @@
 		{placeholder}
 		{oninput}
 		{onfocus}
+		{onblur}
 		onclick={onClick}
 		{readonly}
 	/>

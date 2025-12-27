@@ -17,7 +17,6 @@
 	let order: OrderResponse | undefined = $state();
 
 	$effect(() => {
-		console.log(order);
 		if (order) {
 			url.searchParams.set('email', order.email);
 			url.searchParams.set('code', order.code);

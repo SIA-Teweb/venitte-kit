@@ -39,6 +39,7 @@ export interface InputProps {
 	readonly?: boolean;
 	oninput?: (event: Event) => void;
 	onfocus?: (event: Event) => void;
+	onblur?: (event: Event) => void;
 	onclick?: (event: Event) => void;
 }
 
@@ -74,16 +75,6 @@ export interface SelectOption {
 	active?: boolean;
 	disabled?: boolean;
 }
-
-// export interface SelectProps {
-// 	name: string;
-// 	options: SelectOption[];
-// 	value: number | string | number[] | string[];
-// 	placeholder: string;
-// 	class: string;
-// 	multiple: boolean;
-// 	onchange?: (value: string | number) => void;
-// }
 
 type SingleValue = string | number;
 

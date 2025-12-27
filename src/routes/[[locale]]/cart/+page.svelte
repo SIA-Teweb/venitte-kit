@@ -5,11 +5,13 @@
 	import CartSummary from '$lib/components/cart/CartSummary.svelte';
 	import SkeletonCartProductsList from '$lib/components/cart/SkeletonCartProductsList.svelte';
 	import Section from '$lib/components/ui/Section.svelte';
+	import { api } from '$lib/helpers/api';
 	import { cartStore } from '$lib/stores/cart';
-	import { createOrderForm } from '$lib/stores/forms';
+	import { createOrderForm, formValues } from '$lib/stores/forms';
 	import { t } from '$lib/translations';
 	import type { Variant } from '$lib/types/cart';
 	import type { DeliveryResponse } from '$lib/types/orders';
+	import { onMount, untrack } from 'svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -19,7 +21,7 @@
 	let loadedVariants: Variant[] = $state([]);
 
 	const orderForm = createOrderForm();
-	const { form, createSubmitHandler } = orderForm;
+	const { form, createSubmitHandler, errors, data: orderFormData } = orderForm;
 
 	let { totalPrice, totalDiscount } = $derived.by(() => {
 		if (!loadedVariants.length) return { totalPrice: 0, totalDiscount: 0 };
@@ -46,14 +48,32 @@
 		return { totalPrice: total, totalDiscount: discount };
 	});
 
+	function setDeliveryData() {
+		if (!$formValues.country || !$formValues.postcode) {
+			deliveryData = undefined;
+			return;
+		}
+
+		api.orders
+			.getDeliveryData({
+				country: $formValues.country,
+				deliveryType: '',
+				postcode: $formValues.postcode,
+				items: $cartStore
+			})
+			.then((data) => {
+				deliveryData = data;
+			});
+	}
+
 	$effect(() => {
 		data.variantsPromise?.then((variants) => {
 			loadedVariants = variants;
 		});
+	});
 
-		data.deliveryPromise?.then((data) => {
-			if (data) deliveryData = data;
-		});
+	onMount(() => {
+		setDeliveryData();
 	});
 </script>
 
@@ -67,7 +87,7 @@
 					<CartProductsList variants={variantsResponse} />
 				{/await}
 				{#if isFormOpen && orderForm}
-					<CartForm {orderForm} />
+					<CartForm {orderForm} onAddressChange={setDeliveryData} />
 				{/if}
 			</div>
 			<div>

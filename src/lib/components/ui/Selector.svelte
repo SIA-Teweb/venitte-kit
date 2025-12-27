@@ -17,10 +17,6 @@
 		value = chosenValue;
 		onchange?.(value);
 	}
-
-	$effect(() => {
-		console.log(value);
-	});
 </script>
 
 <div class="flex flex-wrap gap-2">

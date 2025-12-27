@@ -102,7 +102,14 @@
 >
 	<!-- Desktop Header -->
 	<div class="md:flex hidden w-full max-w-[1200px] gap-6 items-stretch">
-		<img class="py-2" src={logo} alt="Venitte Logo" />
+		<button
+			class="h-full w-auto"
+			onclick={() => {
+				goto(route(ROUTES.HOME, $locale));
+			}}
+		>
+			<img class="h-full" src={logo} alt="Venitte Logo" />
+		</button>
 		<MenuButton
 			icon={House}
 			label={$t('common.home')}
@@ -151,11 +158,14 @@
 					<Search />
 				</button>
 			</div>
-			<img
-				class="absolute left-1/2 top-0 -translate-x-1/2 h-full py-4"
-				src={logo}
-				alt="Venitte Logo"
-			/>
+			<button
+				class="h-full w-auto absolute left-1/2 top-0 -translate-x-1/2 py-4"
+				onclick={() => {
+					goto(route(ROUTES.HOME, $locale));
+				}}
+			>
+				<img class="h-full" src={logo} alt="Venitte Logo" />
+			</button>
 			<button onclick={openLanguageSelect}>
 				<Languages />
 			</button>

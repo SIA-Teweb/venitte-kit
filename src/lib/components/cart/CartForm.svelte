@@ -3,7 +3,6 @@
 	import FormItem from '../ui/FormItem.svelte';
 	import Input from '../ui/Input.svelte';
 	import Section from '../ui/Section.svelte';
-	import Select from '../ui/Select.svelte';
 	import countries from '$lib/constants/countries.json';
 	import { Steps } from '@skeletonlabs/skeleton-svelte';
 	import { ChevronLeft, ChevronRight } from '@lucide/svelte';
@@ -15,7 +14,7 @@
 	import InputPhone from '../ui/InputPhone.svelte';
 	import NewSelect from '../ui/NewSelect.svelte';
 
-	let { orderForm } = $props();
+	let { orderForm, onAddressChange } = $props();
 	const { errors } = $derived(orderForm);
 
 	const steps = [
@@ -23,17 +22,13 @@
 		{ title: $t('shop.delivery') },
 		{ title: $t('shop.additional') }
 	];
-
-	$effect(() => {
-		console.log($errors);
-	});
 </script>
 
 <Section title={$t('shop.placeOrder')} class="preset-bordered-card p-4 block">
 	<Steps
 		orientation={isMobileScreen() ? 'horizontal' : 'vertical'}
 		count={steps.length - 1}
-		class="w-full gap-16 md:p-4"
+		class="w-full gap-4 md:gap-16 md:p-4"
 	>
 		<Steps.List>
 			{#each steps as item, index}
@@ -80,10 +75,16 @@
 								}))}
 								placeholder={$t('common.chooseSomething')}
 								bind:value={$formValues.country}
+								onchange={onAddressChange}
 							/>
 						</FormItem>
 						<FormItem label={$t('common.postcode')} errors={$errors.postcode}>
-							<Input name="postcode" placeholder="LV-1029" bind:value={$formValues.postcode} />
+							<Input
+								name="postcode"
+								placeholder="LV-1029"
+								bind:value={$formValues.postcode}
+								onblur={onAddressChange}
+							/>
 						</FormItem>
 						<FormItem label={$t('common.city')} errors={$errors.postcode}>
 							<Input name="city" placeholder="Rīga" bind:value={$formValues.city} />
