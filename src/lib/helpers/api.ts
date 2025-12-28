@@ -2,7 +2,15 @@ import { BASE_API_URI } from '$lib/constants/uri';
 import type { Variant } from '$lib/types/cart';
 import { type Category } from '$lib/types/categories';
 import type { LocationResponse } from '$lib/types/location';
-import { type DeliveryResponse, type DeliveryPayload, type OrderResponse } from '$lib/types/orders';
+import type {
+	DeliveryResponse,
+	DeliveryPayload,
+	OrderResponse,
+	PromoPayload,
+	DeliveryTypesPayload,
+	DeliveryTypesResponse,
+	OrderCreatePayload
+} from '$lib/types/orders';
 import { type PageResponse } from '$lib/types/pages';
 import { type ProductSingle, type ProductResponse } from '$lib/types/products';
 
@@ -59,10 +67,15 @@ export const api = {
 	},
 	orders: {
 		getSettings: () => get('/shop/settings'),
+		getDeliveryTypes: (payload: DeliveryTypesPayload) =>
+			post<DeliveryTypesResponse>('/shop/orders/deliveryoptions', payload),
+		getPromo: (payload: PromoPayload) =>
+			post<number>('/shop/orders/previewpromocodediscount', payload),
 		getDeliveryData: (payload: DeliveryPayload) =>
 			post<DeliveryResponse>('/shop/orders/previewdelivery', payload),
 		checkOrder: (payload: { code: string; email: string }) =>
-			post<OrderResponse>('/shop/orders/view', payload)
+			post<OrderResponse>('/shop/orders/view', payload),
+		create: (payload: OrderCreatePayload) => post('/shop/orders/create', payload)
 	},
 	pages: {
 		get: (slug: string) => post<PageResponse>('/pages/pages/first', garbagePagePayload(slug))

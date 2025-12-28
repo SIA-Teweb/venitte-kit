@@ -13,8 +13,15 @@
 	import { formValues } from '$lib/stores/forms';
 	import InputPhone from '../ui/InputPhone.svelte';
 	import NewSelect from '../ui/NewSelect.svelte';
+	import { cartStore } from '$lib/stores/cart';
+	import { api } from '$lib/helpers/api';
+	import type { DeliveryTypesResponse } from '$lib/types/orders';
+	import { onMount } from 'svelte';
+	import Selector from '../ui/Selector.svelte';
+	import { toMoney } from '$lib/helpers/strings';
+	import type { SelectOption } from '$lib/types/ui';
 
-	let { orderForm, onAddressChange } = $props();
+	let { orderForm } = $props();
 	const { errors } = $derived(orderForm);
 
 	const steps = [
@@ -22,6 +29,43 @@
 		{ title: $t('shop.delivery') },
 		{ title: $t('shop.additional') }
 	];
+
+	let deliveryTypes: DeliveryTypesResponse = $state([]);
+	let destinationsList: SelectOption[] = $state([]);
+
+	function getDeliveryOptions() {
+		if (!$formValues.country) return;
+
+		api.orders
+			.getDeliveryTypes({
+				country: $formValues.country,
+				items: $cartStore
+			})
+			.then((data) => {
+				deliveryTypes = data;
+			});
+	}
+
+	$effect(() => {
+		if (deliveryTypes && $formValues.deliveryType) {
+			destinationsList = [];
+
+			const currentDeliveryType = deliveryTypes.find(
+				(type) => type.key === $formValues.deliveryType
+			);
+
+			if (!currentDeliveryType) return;
+
+			destinationsList = currentDeliveryType.destinations.map((destination, i) => ({
+				label: destination.name,
+				value: destination.name
+			}));
+		}
+	});
+
+	onMount(() => {
+		getDeliveryOptions();
+	});
 </script>
 
 <Section title={$t('shop.placeOrder')} class="preset-bordered-card p-4 block">
@@ -49,6 +93,7 @@
 			{#each steps as item, index}
 				<Steps.Content {index} class="flex flex-col gap-4">
 					{#if index === 0}
+						<h2>{item.title}</h2>
 						<FormItem label={$t('common.name')} errors={$errors.firstname}>
 							<Input name="firstname" bind:value={$formValues.firstname} placeholder="Jānis" />
 						</FormItem>
@@ -66,6 +111,7 @@
 							<InputPhone name="phone" bind:value={$formValues.phone} />
 						</FormItem>
 					{:else if index === 1}
+						<h2>{item.title}</h2>
 						<FormItem label={$t('common.country')} errors={$errors.country}>
 							<NewSelect
 								name="country"
@@ -75,18 +121,13 @@
 								}))}
 								placeholder={$t('common.chooseSomething')}
 								bind:value={$formValues.country}
-								onchange={onAddressChange}
+								onchange={getDeliveryOptions}
 							/>
 						</FormItem>
 						<FormItem label={$t('common.postcode')} errors={$errors.postcode}>
-							<Input
-								name="postcode"
-								placeholder="LV-1029"
-								bind:value={$formValues.postcode}
-								onblur={onAddressChange}
-							/>
+							<Input name="postcode" placeholder="LV-1029" bind:value={$formValues.postcode} />
 						</FormItem>
-						<FormItem label={$t('common.city')} errors={$errors.postcode}>
+						<FormItem label={$t('common.city')} errors={$errors.city}>
 							<Input name="city" placeholder="Rīga" bind:value={$formValues.city} />
 						</FormItem>
 						<FormItem label={$t('common.address')} errors={$errors.address}>
@@ -96,16 +137,31 @@
 								bind:value={$formValues.address}
 							/>
 						</FormItem>
-						<FormItem label={$t('common.address')} errors={$errors.address}>
-							<Input
-								name="address"
-								placeholder="Brīvības iela 49/53"
-								bind:value={$formValues.address}
-							/>
-						</FormItem>
+						{#if deliveryTypes && deliveryTypes.length > 0}
+							<FormItem label={$t('shop.chooseDelivery')} errors={$errors.deliveryType}>
+								<Selector
+									options={deliveryTypes.map((type) => ({
+										value: type.key,
+										label: `${$t(type.key)} ${toMoney(type.price)}`
+									}))}
+									bind:value={$formValues.deliveryType}
+								/>
+							</FormItem>
+						{/if}
+						{#if $formValues.deliveryType && destinationsList && destinationsList.length > 0}
+							<FormItem label="{$t('shop.chooseDestination')} (Omniva)">
+								<NewSelect
+									name="deliveryDestination"
+									placeholder={$t('common.chooseSomething')}
+									options={destinationsList}
+									bind:value={$formValues.deliveryDestination}
+								/>
+							</FormItem>
+						{/if}
 					{:else if index === 2}
+						<h2>{item.title}</h2>
 						<FormItem label={$t('shop.promo')}>
-							<Input />
+							<Input name="promocode" />
 						</FormItem>
 						<FormItem label={$t('shop.comments')}>
 							<TextArea />
@@ -114,10 +170,11 @@
 					{/if}
 					<div class="flex justify-between items-center gap-2 mt-4">
 						<Steps.PrevTrigger>
-							<Button preset="tonal" icon={ChevronLeft} label="Back" />
+							<Button preset="tonal" icon={ChevronLeft} label={$t('common.back')} />
 						</Steps.PrevTrigger>
+						<div></div>
 						<Steps.NextTrigger>
-							<Button preset="tonal" afterIcon={ChevronRight} label="Next" />
+							<Button preset="tonal" afterIcon={ChevronRight} label={$t('common.next')} />
 						</Steps.NextTrigger>
 					</div>
 				</Steps.Content>

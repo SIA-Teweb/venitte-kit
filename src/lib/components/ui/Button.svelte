@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { ButtonProps } from '$lib/types/ui';
+	import { Loader } from '@lucide/svelte';
 
 	let {
 		type = 'button',
@@ -12,6 +13,7 @@
 		isMenu = false,
 		iconSized = false,
 		disabled = false,
+		isLoading = false,
 		class: className
 	}: ButtonProps = $props();
 
@@ -34,13 +36,17 @@
 </script>
 
 <button {type} class={clases} {onclick} {disabled}>
-	{#if icon}
-		<Icon />
-	{/if}
-	{#if label}
-		<span class={isMenu ? 'grow text-start' : ''}>{label}</span>
-	{/if}
-	{#if afterIcon}
-		<AfterIcon />
+	{#if isLoading}
+		<Loader class="animate-spin" />
+	{:else}
+		{#if icon}
+			<Icon />
+		{/if}
+		{#if label}
+			<span class={isMenu ? 'grow text-start' : ''}>{label}</span>
+		{/if}
+		{#if afterIcon}
+			<AfterIcon />
+		{/if}
 	{/if}
 </button>

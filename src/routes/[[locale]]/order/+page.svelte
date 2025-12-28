@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import Order from '$lib/components/orders/Order.svelte';
-	import CheckOrderForm from '$lib/components/widgets/CheckOrderForm.svelte';
+	import OrderCheckForm from '$lib/components/orders/OrderCheckForm.svelte';
 	import { api } from '$lib/helpers/api';
 	import { t } from '$lib/translations';
 	import type { OrderResponse } from '$lib/types/orders';
@@ -39,8 +39,8 @@
 	<span>{$t('common.orderSuccess')}</span>
 {/if}
 {#if !orderPromise && !order}
-	<div class="max-w-[300px] absolute flex self-center justify-center">
-		<CheckOrderForm bind:response={order} />
+	<div class="max-w-[300px] h-inherit absolute flex self-center justify-center">
+		<OrderCheckForm bind:response={order} />
 	</div>
 {:else}
 	<Order orderPromise={orderPromise ?? Promise.resolve(order)} />

@@ -26,6 +26,7 @@
 	let localOptions = $derived(constructLocalOptions());
 
 	function constructLocalOptions() {
+		console.log(options);
 		return options.map((option) => ({
 			...option,
 			active: (value as T[]).includes(option.value as T)
@@ -98,7 +99,11 @@
 </script>
 
 <div class={className}>
-	<button class="input flex items-center gap-2 truncate justify-between" onclick={onSelectClick}>
+	<button
+		type="button"
+		class="input flex items-center gap-2 truncate justify-between"
+		onclick={onSelectClick}
+	>
 		{#if !valueLabel && placeholder}
 			<span class="text-surface-400">{placeholder}</span>
 		{/if}

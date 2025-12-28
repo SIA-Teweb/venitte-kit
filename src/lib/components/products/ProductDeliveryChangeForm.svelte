@@ -19,7 +19,7 @@
 	const { errors } = deliveryForm;
 </script>
 
-<form use:deliveryForm.form class="flex flex-col gap-2">
+<form use:deliveryForm.form class="flex flex-col gap-2" onfeltesuccess={closeForm}>
 	<FormItem label={$t('common.country')} errors={$errors.country}>
 		<NewSelect
 			name="country"

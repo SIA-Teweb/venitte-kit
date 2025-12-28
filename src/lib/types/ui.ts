@@ -13,6 +13,7 @@ export interface ButtonProps {
 	isMenu?: boolean;
 	iconSized?: boolean;
 	disabled?: boolean;
+	isLoading?: boolean;
 	onclick?: (event: Event) => void;
 	class?: string;
 }

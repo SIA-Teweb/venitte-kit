@@ -9,6 +9,30 @@ export interface DeliveryPayload {
 	items: CartItem[];
 }
 
+export interface DeliveryTypesPayload {
+	country: string;
+	items: CartItem[];
+}
+
+export type DeliveryTypesResponse = {
+	key: string;
+	price: number;
+	destinations: {
+		country: string;
+		city: string;
+		address: string;
+		name: string;
+	}[];
+}[];
+
+export interface PromoPayload {
+	postcode: string;
+	country: string;
+	deliveryType: string;
+	items: CartItem[];
+	promocode: string;
+}
+
 export interface DeliveryResponse {
 	from: string;
 	to: string;
@@ -50,7 +74,23 @@ export interface OrderResponse {
 	postcode: string;
 	promocode: string;
 	promocodePriceReduction: number;
-	rulesAgreed: true;
+	rulesAgreed: boolean;
 	status: OrderStatusEnum;
 	totalPrice: number;
+}
+
+export interface OrderCreatePayload {
+	firstname: string;
+	lastname: string;
+	email: string;
+	phone: string;
+	city: string;
+	address: string;
+	deliveryType: string;
+	deliveryDestination: string;
+	paymentApi: string;
+	promocode?: string;
+	comment?: string;
+	rulesAgreed: boolean;
+	items: CartItem[];
 }

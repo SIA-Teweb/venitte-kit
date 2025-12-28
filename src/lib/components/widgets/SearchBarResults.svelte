@@ -32,7 +32,7 @@
 					alt="Product thumb"
 				/>
 			</div>
-			<span class="grow">{product.brand} {product.model}</span>
+			<span class="text-sm md:text-base grow">{product.brand} {product.model}</span>
 			<ProductPrice
 				priceObject={{
 					maxPrice: product.maxPrice,

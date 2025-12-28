@@ -20,6 +20,7 @@ declare global {
 declare module 'svelte/elements' {
 	export interface HTMLAttributes {
 		onclickoutside?: (event: CustomEvent<void>) => void;
+		onfeltesuccess?: (event: CustomEvent<void>) => void;
 	}
 }
 

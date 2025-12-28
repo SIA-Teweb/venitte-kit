@@ -29,10 +29,10 @@
 
 <label class="flex input gap-2 items-stretch {clases} {className}" bind:this={ref}>
 	{#if Icon}
-		<Icon size={24} class="self-center" />
+		<Icon size={24} class="self-center" color="var(--color-surface-300)" />
 	{/if}
 	<input
-		class="w-full"
+		class="w-full placeholder-surface-200"
 		{name}
 		bind:value
 		{placeholder}

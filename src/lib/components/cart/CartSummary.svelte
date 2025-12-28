@@ -12,22 +12,25 @@
 	import MasterCardIcon from '$lib/assets/payment/mastercard.svg';
 	import PayPalIcon from '$lib/assets/payment/paypal.svg';
 	import VisaIcon from '$lib/assets/payment/visa.svg';
+	import { cartStore } from '$lib/stores/cart';
+	import type { Variant } from '$lib/types/cart';
+	import { formValues } from '$lib/stores/forms';
+	import { queryPromoDiscount } from '$lib/helpers/cart';
+	import { api } from '$lib/helpers/api';
+	import { onMount } from 'svelte';
+	import { createChangeDetector } from '$lib/helpers/stores';
 
 	let {
-		onClick,
 		isFormOpen = $bindable(false),
-		totalPrice,
-		totalDiscount,
-		deliveryData
+		variants
 	}: {
-		onClick: () => void;
 		isFormOpen: Boolean;
-		totalPrice: number;
-		totalDiscount: number;
-		deliveryData?: DeliveryResponse;
+		variants: Variant[];
 	} = $props();
 
-	let totalToPay = $derived(totalPrice - totalDiscount + (deliveryData?.price ?? 0));
+	let promoDiscount: number = $state(0);
+	let deliveryData: DeliveryResponse | undefined = $state(undefined);
+	let locationChanged = createChangeDetector($formValues, ['country', 'postcode']);
 
 	const paymentMethods = [
 		AmexIcon,
@@ -37,6 +40,76 @@
 		PayPalIcon,
 		VisaIcon
 	];
+
+	let { totalPrice, totalDiscount } = $derived.by(() => {
+		if (!variants.length) return { totalPrice: 0, totalDiscount: 0 };
+
+		let total = 0;
+		let discount = 0;
+
+		$cartStore.forEach((cartItem) => {
+			const product = variants.find((p) => p.id === cartItem.variantId);
+
+			if (!product) return;
+
+			const price = Number(product.versions[0].price);
+			const specialPrice = Number(product.versions[0].specialPrice);
+			const itemPrice = cartItem.amount * Number(price);
+
+			total += itemPrice;
+
+			if (specialPrice !== 0) {
+				discount += cartItem.amount * (price - specialPrice);
+			}
+		});
+
+		return { totalPrice: total, totalDiscount: discount + promoDiscount };
+	});
+
+	let totalToPay = $derived(totalPrice - totalDiscount + (deliveryData?.price ?? 0));
+
+	function setDeliveryData() {
+		if (!$formValues.country || !$formValues.postcode) {
+			deliveryData = undefined;
+			return;
+		}
+
+		api.orders
+			.getDeliveryData({
+				country: $formValues.country,
+				deliveryType: '',
+				postcode: $formValues.postcode,
+				items: $cartStore
+			})
+			.then((data) => {
+				deliveryData = data;
+			});
+	}
+
+	function calculateDiscount() {
+		if (!$formValues.promocode) return;
+
+		queryPromoDiscount({
+			postcode: $formValues.postcode,
+			country: $formValues.country,
+			deliveryType: $formValues.deliveryType,
+			items: $cartStore,
+			promocode: $formValues.promocode
+		}).then((data) => {
+			promoDiscount = data;
+		});
+	}
+
+	$effect(() => {
+		if (locationChanged($formValues)) {
+			setDeliveryData();
+		}
+	});
+
+	onMount(() => {
+		setDeliveryData();
+		calculateDiscount();
+	});
 </script>
 
 <div class="flex flex-col preset-bordered-card gap-2 p-4">

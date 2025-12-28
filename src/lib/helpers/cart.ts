@@ -5,6 +5,8 @@ import storage from './storage';
 import { showErrorToast, showSuccessToast } from './toaster';
 import { t } from '$lib/translations';
 import { CART_STORAGE_KEY } from '$lib/constants/storage';
+import { api } from './api';
+import type { PromoPayload } from '$lib/types/orders';
 
 export function addToCart(variationId: number) {
 	const cartProduct: CartItem = {
@@ -41,4 +43,25 @@ export function decreaseAmount(variationId: number) {
 export function removeFromCart(variantId: number) {
 	cartStore.remove(variantId);
 	storage.set(CART_STORAGE_KEY, get(cartStore));
+}
+
+export async function queryPromoDiscount(payload: PromoPayload) {
+	try {
+		const discount = await api.orders.getPromo(payload);
+
+		if (discount > 0) {
+			showSuccessToast({
+				description: get(t)('shop.promocodeAccepted')
+			});
+
+			return discount;
+		}
+
+		showErrorToast({
+			description: get(t)('shop.promocodeDoesNotExist')
+		});
+		return 0;
+	} catch {
+		return 0;
+	}
 }

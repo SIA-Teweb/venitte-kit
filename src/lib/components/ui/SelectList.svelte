@@ -21,7 +21,7 @@
 		closeOnChoose?: boolean;
 	} = $props();
 
-	let localOptions = $derived.by(() => getLocalOptions() ?? options);
+	let localOptions = $derived(getLocalOptions());
 	let searchString = $state('');
 
 	function getLocalOptions() {

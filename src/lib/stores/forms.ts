@@ -5,6 +5,9 @@ import { createForm } from 'felte';
 import { get, writable } from 'svelte/store';
 import { z, type RefinementCtx } from 'zod';
 import countries from '$lib/constants/countries.json';
+import { createChangeDetector } from '$lib/helpers/stores';
+import { api } from '$lib/helpers/api';
+import { cartStore } from './cart';
 
 export const formValues = writable<OrderFormValues>(
 	storage.get<OrderFormValues>(FORMS_STORAGE_KEY) ?? {
@@ -16,9 +19,9 @@ export const formValues = writable<OrderFormValues>(
 		phone: '',
 		city: '',
 		address: '',
-		deliveryType: null,
-		deliveryDestination: null,
-		paymentApi: 'stripe',
+		deliveryType: '',
+		deliveryDestination: '',
+		paymentApi: '',
 		promocode: '',
 		comment: '',
 		rulesAgreed: false
@@ -39,9 +42,9 @@ const orderFormShape = addressShape.extend({
 		.nonempty('required')
 		.regex(/^(\+\d{1,3}[- ]?)?\d{10}$/, 'invalidMobileNumber'),
 	city: z.string().nonempty('required'),
-	address: z.string(),
-	deliveryType: z.any(),
-	deliveryDestination: z.any(),
+	address: z.string().nonempty('required'),
+	deliveryType: z.string(),
+	deliveryDestination: z.string(),
 	paymentApi: z.any(),
 	promocode: z.string().optional(),
 	comment: z.string().optional(),
@@ -71,12 +74,30 @@ export function createOrderForm() {
 		initialValues: get(formValues),
 		extend: validator({ schema: orderFormSchema }),
 		onSubmit: (values) => {
-			console.log(values);
+			const newOrderPayload = {
+				...values,
+				items: get(cartStore),
+				paymentApi: 'Stripe',
+				comment: values.comment ?? ''
+			};
+
+			api.orders.create(newOrderPayload).then((response) => {
+				console.log(response);
+			});
+
+			console.log(newOrderPayload);
 		}
 	});
 
-	form.data.subscribe((values) => {
-		formValues.set(values);
+	const initialData = get(formValues);
+	const keysToTrack = Object.keys(initialData) as (keyof OrderFormValues)[];
+
+	const hasChanged = createChangeDetector(initialData, keysToTrack);
+
+	form.data.subscribe((newValues) => {
+		if (hasChanged(newValues)) {
+			formValues.set(newValues);
+		}
 	});
 
 	return form;
@@ -91,12 +112,12 @@ export function createDeliveryForm() {
 		},
 		extend: validator({ schema: addressSchema }),
 		onSubmit: (values) => {
+			console.log(values);
 			formValues.update((orderObject) => ({
 				...orderObject,
 				country: values.country,
 				postcode: values.postcode
 			}));
-			console.log(values);
 		}
 	});
 

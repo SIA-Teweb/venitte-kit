@@ -5,6 +5,8 @@ export const load: PageServerLoad = async ({ isDataRequest, params }) => {
 	const pagePromise = api.pages.get(params.slug);
 
 	return {
-		pagePromise: isDataRequest ? pagePromise : await pagePromise
+		streamed: {
+			pagePromise: isDataRequest ? pagePromise : await pagePromise
+		}
 	};
 };
