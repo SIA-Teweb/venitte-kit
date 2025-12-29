@@ -12,6 +12,10 @@ export interface ToastProps {
 	title?: string;
 	description: string;
 	icon?: Component;
+	action?: {
+		label: string;
+		onClick: () => void;
+	};
 }
 
 export type PopoverInitProps<T> = {

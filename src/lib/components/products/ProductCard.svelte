@@ -17,13 +17,13 @@
 </script>
 
 <button
-	class="flex flex-col gap-2 p-2 transform transition-transform duration-200 hover:scale-110 text-left"
+	class="flex flex-col gap-2 p-2 transform transition-transform duration-200 hover:scale-110 text-left self-baseline"
 	onclick={() => goto(route(ROUTES.PRODUCT, $locale) + '/' + link)}
 >
 	<Image src={thumbLink} alt={`${brand} ${model}`} clases="object-contain w-full aspect-square" />
 	<div class="flex flex-col">
 		<span class="font-bold">{brand}</span>
-		<span class="text-sm line-clamp-2 leading-5 h-10">{model}</span>
+		<span class="text-sm line-clamp-2 leading-5">{model}</span>
 	</div>
 	<ProductPrice priceObject={{ minPrice, maxPrice, specialPrice, price }} />
 </button>

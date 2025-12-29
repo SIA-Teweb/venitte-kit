@@ -13,11 +13,12 @@ const preset: Record<Kind, { color: string; icon: Component }> = {
 
 const showToast =
 	(kind: Kind) =>
-	({ title, description, icon }: ToastProps) =>
+	({ title, description, icon, action }: ToastProps) =>
 		toaster.info({
 			title,
 			description,
-			meta: { ...preset[kind], icon: icon ?? preset[kind].icon }
+			meta: { ...preset[kind], icon: icon ?? preset[kind].icon },
+			action
 		});
 
 export const showSuccessToast = showToast('success');

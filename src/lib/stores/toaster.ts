@@ -3,5 +3,6 @@ import { createToaster } from '@skeletonlabs/skeleton-svelte';
 
 export const toaster = createToaster({
 	placement: isMobileScreen() ? 'top' : 'bottom-end',
-	duration: 5000
+	duration: 5000 + 3000000,
+	offsets: isMobileScreen() ? 'calc(var(--header-height) + 1rem)' : '1rem'
 });

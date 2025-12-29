@@ -41,6 +41,7 @@
 </script>
 
 <Input
+	type="search"
 	bind:value={searchString}
 	class="rounded-xl"
 	icon={Search}

@@ -105,7 +105,7 @@
 		onclick={onSelectClick}
 	>
 		{#if !valueLabel && placeholder}
-			<span class="text-surface-400">{placeholder}</span>
+			<span class="text-surface-200">{placeholder}</span>
 		{/if}
 		<span>{valueLabel}</span>
 		<ChevronsUpDown size={24} />

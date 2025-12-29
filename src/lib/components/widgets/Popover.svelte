@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { clickOutside } from '$lib/helpers/events';
-	import { scale } from 'svelte/transition';
+	import { fade, scale } from 'svelte/transition';
 
 	let { content, close, width = '' } = $props();
 
@@ -18,7 +18,7 @@
 	use:clickOutside
 	onclickoutside={() => close?.()}
 	onclick={(e) => e.stopImmediatePropagation()}
-	transition:scale={{ duration: 200 }}
+	transition:fade={{ duration: 200 }}
 	role="dialog"
 	tabindex="-1"
 	onkeydown={handleKeydown}

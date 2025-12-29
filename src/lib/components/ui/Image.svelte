@@ -11,7 +11,7 @@
 		<div class={[clases, 'placeholder animate-pulse']}></div>
 	{/if}
 	<img
-		class={[clases, isLoaded ? 'flex' : 'hidden', 'w-full h-full']}
+		class={[clases, isLoaded ? 'flex' : 'hidden', 'w-full h-full transform-gpu backface-hidden']}
 		src={BASE_API_URI + src}
 		{alt}
 		onload={() => (isLoaded = true)}

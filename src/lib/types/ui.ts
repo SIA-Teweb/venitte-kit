@@ -1,5 +1,6 @@
 import type { ComponentIcon } from '@lucide/svelte';
 import type { Component, Snippet } from 'svelte';
+import type { HTMLInputAttributes } from 'svelte/elements';
 
 type Preset = 'primary' | 'tonal' | 'ghost';
 
@@ -29,6 +30,7 @@ export interface BadgeProps {
 }
 
 export interface InputProps {
+	type?: HTMLInputAttributes['type'];
 	icon?: typeof ComponentIcon;
 	afterIcon?: typeof ComponentIcon;
 	value?: string;
@@ -36,6 +38,8 @@ export interface InputProps {
 	full?: boolean;
 	ref?: HTMLElement;
 	name?: string;
+	inputmode?: HTMLInputAttributes['inputmode'];
+	autocomplete?: HTMLInputAttributes['autocomplete'];
 	class?: string;
 	readonly?: boolean;
 	oninput?: (event: Event) => void;

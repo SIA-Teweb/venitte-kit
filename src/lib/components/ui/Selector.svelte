@@ -24,7 +24,7 @@
 	}
 </script>
 
-<div class="flex flex-wrap gap-2">
+<div class="flex-wrap gap-2 grid grid-cols-3">
 	{#each options as option}
 		<button
 			type="button"

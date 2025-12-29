@@ -95,14 +95,26 @@
 					{#if index === 0}
 						<h2>{item.title}</h2>
 						<FormItem label={$t('common.name')} errors={$errors.firstname}>
-							<Input name="firstname" bind:value={$formValues.firstname} placeholder="Jānis" />
+							<Input
+								name="firstname"
+								autocomplete="given-name"
+								bind:value={$formValues.firstname}
+								placeholder="Jānis"
+							/>
 						</FormItem>
 						<FormItem label={$t('common.surname')} errors={$errors.lastname}>
-							<Input name="lastname" bind:value={$formValues.lastname} placeholder="Berziņš" />
+							<Input
+								name="lastname"
+								autocomplete="family-name"
+								bind:value={$formValues.lastname}
+								placeholder="Berziņš"
+							/>
 						</FormItem>
 						<FormItem label={$t('common.email')} errors={$errors.email}>
 							<Input
+								type="email"
 								name="email"
+								autocomplete="email"
 								bind:value={$formValues.email}
 								placeholder="janis.berzins@venitte.shop"
 							/>
@@ -125,14 +137,25 @@
 							/>
 						</FormItem>
 						<FormItem label={$t('common.postcode')} errors={$errors.postcode}>
-							<Input name="postcode" placeholder="LV-1029" bind:value={$formValues.postcode} />
+							<Input
+								name="postcode"
+								autocomplete="postal-code"
+								placeholder="LV-1029"
+								bind:value={$formValues.postcode}
+							/>
 						</FormItem>
 						<FormItem label={$t('common.city')} errors={$errors.city}>
-							<Input name="city" placeholder="Rīga" bind:value={$formValues.city} />
+							<Input
+								name="city"
+								autocomplete="address-level2"
+								placeholder="Rīga"
+								bind:value={$formValues.city}
+							/>
 						</FormItem>
 						<FormItem label={$t('common.address')} errors={$errors.address}>
 							<Input
 								name="address"
+								autocomplete="street-address"
 								placeholder="Brīvības iela 49/53"
 								bind:value={$formValues.address}
 							/>

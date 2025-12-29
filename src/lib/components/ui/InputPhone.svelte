@@ -1,7 +1,7 @@
 <script lang="ts">
 	import countries from '$lib/constants/countries.json';
 	import Input from './Input.svelte';
-	import { untrack } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import NewSelect from './NewSelect.svelte';
 
 	let { name, value = $bindable() } = $props();
@@ -11,44 +11,47 @@
 		value: `+${c.code}`
 	}));
 
-	let code = $state('+371');
-	let number = $state('');
+	function parseValue(val: string | undefined) {
+		if (!val) return { code: '+371', number: '' };
+
+		const matchingCode = countryPhoneCodes.find((c) => val.startsWith(c.value));
+		if (matchingCode) {
+			return { code: matchingCode.value, number: val.slice(matchingCode.value.length) };
+		}
+		return { code: '+371', number: val };
+	}
+
+	const initial = parseValue(value);
+	let code = $state(initial.code);
+	let number = $state(initial.number);
 	let hiddenInput: HTMLInputElement;
 
 	let derivedFullValue = $derived(code + number);
 
 	$effect(() => {
-		if (value !== derivedFullValue) {
-			value = derivedFullValue;
-
-			if (hiddenInput) {
-				hiddenInput.value = derivedFullValue;
-				hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
-				hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
-			}
+		if (value !== undefined && value !== untrack(() => derivedFullValue)) {
+			const parsed = parseValue(value);
+			if (parsed.code !== code) code = parsed.code;
+			if (parsed.number !== number) number = parsed.number;
 		}
 	});
 
 	$effect(() => {
-		if (value !== derivedFullValue) {
-			const currentFull = untrack(() => derivedFullValue);
+		if (derivedFullValue !== untrack(() => value)) {
+			value = derivedFullValue;
 
-			if (value !== currentFull) {
-				const matchingCode = countryPhoneCodes.find((c) => value?.startsWith(c.value));
-
-				if (matchingCode) {
-					code = matchingCode.value;
-					number = value.slice(matchingCode.value.length);
-				} else if (value) {
-					number = value;
+			tick().then(() => {
+				if (hiddenInput) {
+					hiddenInput.value = derivedFullValue;
+					hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
 				}
-			}
+			});
 		}
 	});
 </script>
 
 <div class="flex gap-2">
 	<NewSelect class="w-1/3" bind:value={code} options={countryPhoneCodes} />
-	<Input class="w-2/3" placeholder="20483529" bind:value={number} />
+	<Input type="tel" class="w-2/3" placeholder="20483529" bind:value={number} />
 	<input type="hidden" {name} bind:this={hiddenInput} />
 </div>

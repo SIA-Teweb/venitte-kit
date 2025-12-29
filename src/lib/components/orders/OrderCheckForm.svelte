@@ -46,10 +46,16 @@
 
 <form use:form class="flex flex-col gap-2">
 	<FormItem label={$t('shop.code')} errors={$errors.code}>
-		<Input icon={Hash} placeholder="23090662" name="code" />
+		<Input inputmode="numeric" icon={Hash} placeholder="23090662" name="code" />
 	</FormItem>
 	<FormItem label={$t('common.email')} errors={$errors.email}>
-		<Input icon={Mail} placeholder="janis.berzins@venitte.shop" name="email" />
+		<Input
+			type="email"
+			autocomplete="email"
+			icon={Mail}
+			placeholder="janis.berzins@venitte.shop"
+			name="email"
+		/>
 	</FormItem>
 	<div class="mt-4 flex gap-2 flex-wrap">
 		<Button type="submit" icon={Check} label={$t('shop.checkLink')} full {isLoading} />

@@ -2,12 +2,15 @@
 	import type { InputProps } from '$lib/types/ui';
 
 	let {
+		type = 'text',
 		icon,
 		afterIcon,
 		value = $bindable(),
 		placeholder,
 		full = false,
 		name,
+		inputmode = undefined,
+		autocomplete = 'off',
 		class: className,
 		readonly = false,
 		oninput,
@@ -33,6 +36,9 @@
 	{/if}
 	<input
 		class="w-full placeholder-surface-200"
+		{type}
+		{inputmode}
+		{autocomplete}
 		{name}
 		bind:value
 		{placeholder}

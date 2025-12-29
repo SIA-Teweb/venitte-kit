@@ -3,10 +3,13 @@ import type { CartItem } from '$lib/types/cart';
 import { get } from 'svelte/store';
 import storage from './storage';
 import { showErrorToast, showSuccessToast } from './toaster';
-import { t } from '$lib/translations';
+import { locale, t } from '$lib/translations';
 import { CART_STORAGE_KEY } from '$lib/constants/storage';
 import { api } from './api';
 import type { PromoPayload } from '$lib/types/orders';
+import { goto } from '$app/navigation';
+import { route, ROUTES } from '$lib/constants/routes';
+import { resolve } from '$app/paths';
 
 export function addToCart(variationId: number) {
 	const cartProduct: CartItem = {
@@ -18,7 +21,11 @@ export function addToCart(variationId: number) {
 
 	if (alreadyExist) {
 		return showErrorToast({
-			description: get(t)('shop.alreadyExists')
+			description: get(t)('shop.alreadyExists'),
+			action: {
+				label: get(t)('common.cart'),
+				onClick: () => goto(resolve(route(ROUTES.CART, get(locale))))
+			}
 		});
 	}
 
@@ -26,7 +33,11 @@ export function addToCart(variationId: number) {
 	storage.set(CART_STORAGE_KEY, get(cartStore));
 
 	showSuccessToast({
-		description: get(t)('shop.addedToCart')
+		description: get(t)('shop.addedToCart'),
+		action: {
+			label: get(t)('common.cart'),
+			onClick: () => goto(resolve(route(ROUTES.CART, get(locale))))
+		}
 	});
 }
 

@@ -31,7 +31,7 @@
 		/>
 	</FormItem>
 	<FormItem label={$t('common.postcode')} errors={$errors.postcode}>
-		<Input name="postcode" value={$formValues.postcode} />
+		<Input name="postcode" autocomplete="postal-code" value={$formValues.postcode} />
 	</FormItem>
 	<div class="mt-4 flex gap-2 flex-wrap">
 		<Button type="submit" preset="primary" icon={Check} label={$t('common.saveChanges')} full />

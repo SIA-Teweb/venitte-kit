@@ -6,7 +6,7 @@
 	let { product }: { product: ProductSingle } = $props();
 </script>
 
-<div class="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6">
+<div class="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6 items-start">
 	<ProductSingleGallery {product} />
 	<ProductSingleDetails {product} />
 </div>
