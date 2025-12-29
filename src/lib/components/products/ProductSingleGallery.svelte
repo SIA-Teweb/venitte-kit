@@ -27,7 +27,7 @@
 </script>
 
 <div class="flex gap-2 -mx-4 -mt-10 md:m-0">
-	<div class="hidden md:flex flex-col gap-2 max-w-[100px] flex-none">
+	<div class="hidden md:flex flex-col gap-2 max-w-[100px] w-full flex-none">
 		{#each images as image, i}
 			{@const thumbnail = image.thumbnails.find((thumb) => thumb.size === ImageSizeEnum.s240)?.link}
 
@@ -40,7 +40,7 @@
 			</button>
 		{/each}
 	</div>
-	<div class="relative aspect-square shrink min-w-0">
+	<div class="relative aspect-square shrink min-w-0 w-full">
 		<div
 			class="snap-x snap-mandatory overflow-scroll flex aspect-square no-scrollbar"
 			bind:this={galleryElement}
