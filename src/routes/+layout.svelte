@@ -27,7 +27,7 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div
+<main
 	class="pt-(--header-height) pb-(--navbar-height) md:pb-0 flex flex-col gap-20 min-h-dvh h-full items-center"
 >
 	<Toaster />
@@ -39,4 +39,4 @@
 	</div>
 	<BottomNavBar />
 	<Footer />
-</div>
+</main>

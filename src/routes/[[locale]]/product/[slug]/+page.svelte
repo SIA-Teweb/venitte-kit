@@ -4,6 +4,8 @@
 	import { formValues } from '$lib/stores/forms';
 	import { onMount } from 'svelte';
 	import type { PageProps } from './$types';
+	import { locale } from '$lib/translations';
+	import SEO from '$lib/components/widgets/SEO.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -16,5 +18,6 @@
 {#await data.product}
 	<SkeletonProductSingle />
 {:then product}
+	<SEO title={`${product.brand} ${product.model}`} description={product.description[$locale]} />
 	<ProductSingle {product} />
 {/await}

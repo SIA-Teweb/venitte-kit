@@ -31,8 +31,8 @@
 		<a href={`${route(ROUTES.PAGE, $locale)}/privacy`}>{$t('common.privacy')}</a>
 		<a href={`${route(ROUTES.PAGE, $locale)}/rules`}>{$t('common.rules')}</a>
 		<a href={route(ROUTES.ORDER, $locale)}>{$t('shop.checkLink')}</a>
-		<button on:click={openContacts}>{$t('common.contacts')}</button>
-		<button on:click={openShippingRules}>{$t('common.shippingRules')}</button>
+		<button type="button" on:click={openContacts}>{$t('common.contacts')}</button>
+		<button type="button" on:click={openShippingRules}>{$t('common.shippingRules')}</button>
 	</div>
 
 	<!-- TrustBox widget - Micro Review Count -->

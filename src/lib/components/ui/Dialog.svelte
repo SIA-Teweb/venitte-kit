@@ -28,7 +28,7 @@
 					{$t(dialog.title)}
 				</span>
 			</div>
-			<button class="btn-icon preset-tonal" onclick={() => closeDialog(dialog.id)}>
+			<button type="button" class="btn-icon preset-tonal" onclick={() => closeDialog(dialog.id)}>
 				<XIcon />
 			</button>
 		</header>

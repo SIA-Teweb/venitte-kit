@@ -129,7 +129,7 @@
 		<CartSummaryRow
 			class="[&_span]:last:font-bold"
 			key={$t('shop.delivery')}
-			value={toMoney(deliveryData.price)}
+			value={deliveryData.price > 0 ? toMoney(deliveryData.price) : $t('common.free')}
 		/>
 	{/if}
 	<hr class="hr" />

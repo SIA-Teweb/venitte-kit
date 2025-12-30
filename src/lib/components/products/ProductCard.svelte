@@ -17,7 +17,8 @@
 </script>
 
 <button
-	class="flex flex-col gap-2 p-2 transform transition-transform duration-200 hover:scale-110 text-left self-baseline"
+	type="button"
+	class="flex flex-col gap-2 p-2 transform transition-transform duration-200 hover:scale-110 text-left self-start"
 	onclick={() => goto(route(ROUTES.PRODUCT, $locale) + '/' + link)}
 >
 	<Image src={thumbLink} alt={`${brand} ${model}`} clases="object-contain w-full aspect-square" />

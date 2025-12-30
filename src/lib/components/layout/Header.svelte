@@ -103,6 +103,7 @@
 	<!-- Desktop Header -->
 	<div class="md:flex hidden w-full max-w-[1200px] gap-6 items-stretch">
 		<button
+			type="button"
 			class="h-full w-auto"
 			onclick={() => {
 				goto(route(ROUTES.HOME, $locale));
@@ -150,15 +151,20 @@
 		{#if !isSearchBarOpen}
 			<div class="flex gap-4">
 				{#if $previousUrl && page.url.pathname !== route(ROUTES.HOME, $locale)}
-					<button onclick={() => goto($previousUrl)}>
+					<button type="button" aria-label={$t('common.back')} onclick={() => goto($previousUrl)}>
 						<ChevronLeft />
 					</button>
 				{/if}
-				<button onclick={() => (isSearchBarOpen = true)}>
+				<button
+					type="button"
+					aria-label={$t('shop.searchProducts')}
+					onclick={() => (isSearchBarOpen = true)}
+				>
 					<Search />
 				</button>
 			</div>
 			<button
+				type="button"
 				class="h-full w-auto absolute left-1/2 top-0 -translate-x-1/2 py-4"
 				onclick={() => {
 					goto(route(ROUTES.HOME, $locale));
@@ -166,7 +172,7 @@
 			>
 				<img class="h-full" src={logo} alt="Venitte Logo" />
 			</button>
-			<button onclick={openLanguageSelect}>
+			<button type="button" aria-label={$t(`common.${$locale}`)} onclick={openLanguageSelect}>
 				<Languages />
 			</button>
 		{:else}

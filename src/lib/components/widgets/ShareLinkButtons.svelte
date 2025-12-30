@@ -53,7 +53,7 @@
 <div class="flex gap-2 md:w-[250px] max-w-full">
 	{#each shareButtons as { action, icon, onlyMobile }}
 		{#if !onlyMobile || (isMobileScreen() && onlyMobile)}
-			<button onclick={() => onClick(action)}>
+			<button type="button" onclick={() => onClick(action)}>
 				<img src={icon} alt="Share" />
 			</button>
 		{/if}

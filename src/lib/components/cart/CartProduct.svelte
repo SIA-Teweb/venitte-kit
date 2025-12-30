@@ -23,6 +23,7 @@
 
 <div class="flex gap-2 preset-bordered-card p-2">
 	<button
+		type="button"
 		class="w-24"
 		onclick={() => goto(route(`${ROUTES.PRODUCT}/${variant.product.link}`, $locale))}
 	>

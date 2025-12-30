@@ -45,6 +45,7 @@
 >
 	<Button icon={XIcon} class="fixed top-5 right-5" preset="tonal" onclick={close} />
 	<button
+		type="button"
 		class="hidden md:block w-1/5 h-full max-h-[90dvh]"
 		onclick={() => currentIntdex--}
 		disabled={currentIntdex <= 0}
@@ -63,6 +64,7 @@
 		{/each}
 	</div>
 	<button
+		type="button"
 		class="hidden md:flex w-1/5 h-full max-h-[90dvh] items-center justify-end"
 		onclick={() => currentIntdex++}
 		disabled={currentIntdex >= images.length - 1}

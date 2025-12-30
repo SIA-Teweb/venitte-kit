@@ -6,7 +6,7 @@
 	const Icon = $derived(icon);
 </script>
 
-<button class="relative flex flex-col items-center" {onclick}>
+<button type="button" class="relative flex flex-col items-center" {onclick}>
 	{@render children?.()}
 	<Icon class="h-full" size={28} fill={isActive ? '' : 'none'} color={isActive ? '' : 'black'} />
 	{#if label}

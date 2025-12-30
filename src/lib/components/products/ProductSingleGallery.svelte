@@ -31,7 +31,7 @@
 		{#each images as image, i}
 			{@const thumbnail = image.thumbnails.find((thumb) => thumb.size === ImageSizeEnum.s240)?.link}
 
-			<button onclick={() => onScrollToImage(i)}>
+			<button type="button" onclick={() => onScrollToImage(i)}>
 				<Image
 					clases="aspect-square object-contain"
 					src={thumbnail}
@@ -52,6 +52,7 @@
 				)?.link}
 
 				<button
+					type="button"
 					class="flex-none w-full snap-center"
 					onclick={() => createLightbox({ images, index })}
 				>

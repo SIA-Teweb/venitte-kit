@@ -20,6 +20,7 @@
 </script>
 
 <button
+	type="button"
 	class="{presets[preset]} {className} whitespace-normal text-left wrap-break-word"
 	in:scale
 	{onclick}

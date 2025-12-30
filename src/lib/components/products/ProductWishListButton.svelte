@@ -10,6 +10,7 @@
 </script>
 
 <button
+	type="button"
 	class="btn preset-tonal"
 	onclick={() => (isActive ? removeFromWishList(id) : addToWishList(id))}
 >
